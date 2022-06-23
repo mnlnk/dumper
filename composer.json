@@ -1,0 +1,25 @@
+{
+  "name": "mnlnk/dumper",
+  "version": "1.0.0",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "mnlnk",
+      "email": "u.mnlnk@gmail.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "Manuylenko\\Dumper\\": "src"
+    },
+    "files": [
+      "src/Resources/helpers.php"
+    ]
+  },
+  "require": {
+    "php": ">=5.6",
+    "ext-mbstring": "*",
+    "ext-gd": "*",
+    "ext-curl": "*"
+  }
+}
