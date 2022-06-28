@@ -1,10 +1,18 @@
 ## Dumper 1.0.0
 
+
+##### Требования:
+
++ `PHP >= 5.6`
++ `ext-mbstring`
+
+
 ##### Установка:
 
 ```
 composer require mnlnk/dumper
 ```
+
 
 ##### Примеры:
 
