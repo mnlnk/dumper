@@ -13,7 +13,7 @@ let mnlnkDumpInit = window.mnlnkDumpInit || function (rId) {
             e1.addEventListener('click', event => {
                 let el = event.target;
                 let parent = el.parentElement;
-                const id = el.classList[0].substr(-4);
+                const id = el.classList[0].slice(3);
 
                 parent.classList.toggle('open');
                 if (parent.classList.contains('open')) {
@@ -40,7 +40,7 @@ let mnlnkDumpInit = window.mnlnkDumpInit || function (rId) {
 
     let _braces = (e, s) => {
         e.querySelectorAll(s).forEach(e2 => {
-            const bId = e2.classList[0].substr(-4);
+            const bId = e2.classList[0].slice(3);
 
             e2.addEventListener('mouseenter', event => {
                 event.target.parentElement.querySelectorAll(':scope .br-' + bId).forEach(e3 => {
@@ -58,7 +58,7 @@ let mnlnkDumpInit = window.mnlnkDumpInit || function (rId) {
 
     let _hash = (e, s) => {
         e.querySelectorAll(s).forEach(e2 => {
-            const hId = e2.classList[0].substr(-1);
+            const hId = e2.classList[0].slice(3);
 
             e2.addEventListener('mouseenter', event => {
                 mnlnkRoots.forEach(mRoot => {
@@ -92,7 +92,7 @@ let mnlnkDumpInit = window.mnlnkDumpInit || function (rId) {
 
     let _recursion = (e, s) => {
         e.querySelectorAll(s).forEach(e2 => {
-            const rId = e2.classList[0].substr(-4);
+            const rId = e2.classList[0].slice(3);
 
             e2.addEventListener('mouseenter', event => {
                 _root.querySelectorAll(':scope .br-' + rId).forEach(e3 => {
