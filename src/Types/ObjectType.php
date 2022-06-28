@@ -175,7 +175,11 @@ class ObjectType extends Type
                 $out .= ' ';
                 $out .= '<span class="property">$'.$prop->getName().'</span>';
                 $out .= '<span class="operator"> = </span>';
-                $out .= $dumper->resolve($prop->getValue($object));
+                if ($prop->isInitialized($object)) {
+                    $out .= $dumper->resolve($prop->getValue($object));
+                } else {
+                    $out .= '<span class="not_init" title="Свойство объекта НЕ инициализировано">#E#</span>';
+                }
                 $out .= '</span>';
             }
 

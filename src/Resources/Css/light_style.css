@@ -132,6 +132,9 @@
 .mnlnk_dump .object .property {
     color: #3b5057;
 }
+.mnlnk_dump .object .not_init {
+    color: #95aebf;
+}
 .mnlnk_dump .type {
     color: #99a578;
 }
