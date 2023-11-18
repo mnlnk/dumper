@@ -23,8 +23,6 @@ class StringType extends Type
     public static function render($string)
     {
         $length = mb_strlen($string, self::$charset);
-        $string = htmlspecialchars($string, ENT_QUOTES | ENT_SUBSTITUTE, self::$charset);
-
         $last = substr(strval($length), -1);
 
         switch ($last) {
@@ -43,8 +41,8 @@ class StringType extends Type
         $out = '<span class="block string" title="Строка: '.$length.' '.$ends.'">';
 
         if ($length > self::$maxlength) {
-            $collapse = self::replaceNel($string);
-            $expand = self::replaceNel(mb_substr($string, 0, self::$maxlength - 1, self::$charset));
+            $collapse = self::htmlspecialchars(self::replaceNel($string));
+            $expand = self::htmlspecialchars(self::replaceNel(mb_substr($string, 0, self::$maxlength - 1, self::$charset)));
             $uId = self::getUid();
 
             $out .= '<span class="collapse">"'.$collapse.'" </span>';
@@ -57,6 +55,18 @@ class StringType extends Type
         $out .= '</span>';
 
         return $out;
+    }
+
+    /**
+     * Преобразует спец символы.
+     *
+     * @param string $string
+     *
+     * @return string
+     */
+    protected static function htmlspecialchars($string)
+    {
+        return htmlspecialchars($string, ENT_QUOTES | ENT_SUBSTITUTE, self::$charset);
     }
 
     /**
