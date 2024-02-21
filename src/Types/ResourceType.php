@@ -48,30 +48,6 @@ class ResourceType extends Type
     }
 
     /**
-     * @param resource $gd
-     *
-     * @return array
-     */
-    protected static function getGdData($gd)
-    {
-        return [
-            'width' => imagesy($gd),
-            'height' => imagesx($gd),
-            'true_color' => imageistruecolor($gd),
-        ];
-    }
-
-    /**
-     * @param resource $curl
-     *
-     * @return array
-     */
-    protected static function getCurlData($curl)
-    {
-        return curl_getinfo($curl);
-    }
-
-    /**
      * @param resource $stream
      *
      * @return array
