@@ -93,6 +93,7 @@ class Dumper
             case 'object':
                 return ObjectType::render($this, $var);
             case 'resource':
+            case 'resource (closed)': // since 7.2.0
                 return ResourceType::render($this, $var);
             default:
                 return UnknownType::render();
