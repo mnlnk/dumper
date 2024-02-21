@@ -4,7 +4,7 @@ let mnlnkRoots = [];
 
 let mnlnkDumpInit = window.mnlnkDumpInit || function (rId) {
     let _blocks = [];
-    let _root = document.getElementById('id-' + rId);
+    let _root = document.getElementById('md_id-' + rId);
 
     mnlnkRoots.push(_root);
 
@@ -15,8 +15,8 @@ let mnlnkDumpInit = window.mnlnkDumpInit || function (rId) {
                 let parent = el.parentElement;
                 const id = el.classList[0].slice(3);
 
-                parent.classList.toggle('open');
-                if (parent.classList.contains('open')) {
+                parent.classList.toggle('md_open');
+                if (parent.classList.contains('md_open')) {
                     el.innerText = '<<';
                     el.title = 'Свернуть';
                 } else {
@@ -24,14 +24,14 @@ let mnlnkDumpInit = window.mnlnkDumpInit || function (rId) {
                     el.title = 'Развернуть';
                 }
 
-                if (parent.classList.contains('string')) return;
+                if (parent.classList.contains('md_string')) return;
                 if (_blocks.includes(id)) return;
 
-                _toggle(parent, ':scope > .content > .row > .block > .toggle');
-                _braces(parent, ':scope > .br-' + id);
-                _hash(parent, ':scope > .content > .row > .block > .hash');
-                _namespace(parent, ':scope > .content > .row > .block > .namespace[data-ns]')
-                _recursion(parent, ':scope > .content > .row > .block > .recursion');
+                _toggle(parent, ':scope > .md_content > .md_row > .md_block > .md_toggle');
+                _braces(parent, ':scope > .md_br-' + id);
+                _hash(parent, ':scope > .md_content > .md_row > .md_block > .md_hash');
+                _namespace(parent, ':scope > .md_content > .md_row > .md_block > .md_namespace[data-ns]')
+                _recursion(parent, ':scope > .md_content > .md_row > .md_block > .md_recursion');
 
                 _blocks.push(id);
             });
@@ -43,14 +43,14 @@ let mnlnkDumpInit = window.mnlnkDumpInit || function (rId) {
             const bId = e2.classList[0].slice(3);
 
             e2.addEventListener('mouseenter', event => {
-                event.target.parentElement.querySelectorAll(':scope .br-' + bId).forEach(e3 => {
-                    e3.classList.add('highlight');
+                event.target.parentElement.querySelectorAll(':scope .md_br-' + bId).forEach(e3 => {
+                    e3.classList.add('md_highlight');
                 });
             });
 
             e2.addEventListener('mouseleave', event => {
-                event.target.parentElement.querySelectorAll(':scope .br-' + bId).forEach(e4 => {
-                    e4.classList.remove('highlight');
+                event.target.parentElement.querySelectorAll(':scope .md_br-' + bId).forEach(e4 => {
+                    e4.classList.remove('md_highlight');
                 });
             });
         });
@@ -62,16 +62,16 @@ let mnlnkDumpInit = window.mnlnkDumpInit || function (rId) {
 
             e2.addEventListener('mouseenter', event => {
                 mnlnkRoots.forEach(mRoot => {
-                    mRoot.querySelectorAll(':scope .ha-' + hId).forEach(e3 => {
-                        e3.classList.add('highlight');
+                    mRoot.querySelectorAll(':scope .md_ha-' + hId).forEach(e3 => {
+                        e3.classList.add('md_highlight');
                     })
                 });
             });
 
             e2.addEventListener('mouseleave', event => {
                 mnlnkRoots.forEach(mRoot => {
-                    mRoot.querySelectorAll(':scope .ha-' + hId).forEach(e4 => {
-                        e4.classList.remove('highlight');
+                    mRoot.querySelectorAll(':scope .md_ha-' + hId).forEach(e4 => {
+                        e4.classList.remove('md_highlight');
                     })
                 });
             });
@@ -95,14 +95,14 @@ let mnlnkDumpInit = window.mnlnkDumpInit || function (rId) {
             const rId = e2.classList[0].slice(3);
 
             e2.addEventListener('mouseenter', event => {
-                _root.querySelectorAll(':scope .br-' + rId).forEach(e3 => {
-                    e3.classList.toggle('highlight');
+                _root.querySelectorAll(':scope .md_br-' + rId).forEach(e3 => {
+                    e3.classList.toggle('md_highlight');
                 });
             });
 
             e2.addEventListener('mouseleave', event => {
-                _root.querySelectorAll(':scope .br-' + rId).forEach(e4 => {
-                    e4.classList.remove('highlight');
+                _root.querySelectorAll(':scope .md_br-' + rId).forEach(e4 => {
+                    e4.classList.remove('md_highlight');
                 });
             });
         });
@@ -110,9 +110,9 @@ let mnlnkDumpInit = window.mnlnkDumpInit || function (rId) {
 
     /**/
 
-    _toggle(_root, ':scope > .row > .block > .toggle');
-    _hash(_root, ':scope > .row > .block > .hash');
-    _namespace(_root, ':scope > .row > .block > .namespace[data-ns]')
+    _toggle(_root, ':scope > .md_row > .md_block > .md_toggle');
+    _hash(_root, ':scope > .md_row > .md_block > .md_hash');
+    _namespace(_root, ':scope > .md_row > .md_block > .md_namespace[data-ns]')
 
     /**/
 }

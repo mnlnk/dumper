@@ -45,8 +45,8 @@ class Dumper
 
         $id = self::getId();
 
-        $out .= '<div id="id-'.$id.'" class="mnlnk_dump">';
-        $out .= '<span class="row">';
+        $out .= '<div id="md_id-'.$id.'" class="mnlnk_dump">';
+        $out .= '<span class="md_row">';
         $out .= $this->resolve($var);
         $out .= '</span>';
         $out .= '<script>mnlnkDumpInit("'.$id.'")</script>';

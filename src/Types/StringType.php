@@ -38,16 +38,16 @@ class StringType extends Type
                 $ends = 'символов';
         }
 
-        $out = '<span class="block string" title="Строка: '.$length.' '.$ends.'">';
+        $out = '<span class="md_block md_string" title="Строка: '.$length.' '.$ends.'">';
 
         if ($length > self::$maxlength) {
             $collapse = self::htmlspecialchars(self::replaceNel($string));
             $expand = self::htmlspecialchars(self::replaceNel(mb_substr($string, 0, self::$maxlength - 1, self::$charset)));
             $uId = self::getUid();
 
-            $out .= '<span class="collapse">"'.$collapse.'" </span>';
-            $out .= '<span class="expand">"'.$expand.'..." </span>';
-            $out .= '<a class="to-'.$uId.' toggle" title="Развернуть">>></a>';
+            $out .= '<span class="md_collapse">"'.$collapse.'" </span>';
+            $out .= '<span class="md_expand">"'.$expand.'..." </span>';
+            $out .= '<a class="md_to-'.$uId.' md_toggle" title="Развернуть">>></a>';
         } else {
             $out .= '"'.self::replaceNel($string).'"';
         }
@@ -83,9 +83,9 @@ class StringType extends Type
                 "\n"
             ],
             [
-                '<span class="nel" title="Перенос строки Windows">\r\n</span><br>',
-                '<span class="nel" title="Перенос строки MacOS">\r</span><br>',
-                '<span class="nel" title="Перенос строки Unix">\n</span><br>',
+                '<span class="md_nel" title="Перенос строки Windows">\r\n</span><br>',
+                '<span class="md_nel" title="Перенос строки MacOS">\r</span><br>',
+                '<span class="md_nel" title="Перенос строки Unix">\n</span><br>',
             ],
             $string
         );

@@ -43,8 +43,8 @@ class ArrayType extends Type
 
         $brId = static::getUid();
 
-        $out = '<span class="block array" title="Массив: '.$count.' '.$ends.'">';
-        $out .= '<span class="br-'.$brId.' brackets">[</span>';
+        $out = '<span class="md_block md_array" title="Массив: '.$count.' '.$ends.'">';
+        $out .= '<span class="md_br-'.$brId.' brackets">[</span>';
 
 
 
@@ -52,24 +52,24 @@ class ArrayType extends Type
             $arrId = array_keys(self::$list, $array)[0];
             $recId = self::$br[$arrId];
 
-            $out .= '<span class="re-'.$recId.' recursion" title="Рекурсия массива">&recursion</span>';
+            $out .= '<span class="md_re-'.$recId.' md_recursion" title="Рекурсия массива">&recursion</span>';
         } else {
             if ($count > 0) {
-                $out .= '<a class="to-'.$brId.' toggle" title="Развернуть">>></a>';
-                $out .= '<span class="content">';
+                $out .= '<a class="md_to-'.$brId.' md_toggle" title="Развернуть">>></a>';
+                $out .= '<span class="md_content">';
 
                 array_push(self::$list, $array);
                 $arrId = array_keys(self::$list, $array)[0];
                 self::$br[$arrId] = $brId;
 
                 foreach ($array as $key => $value) {
-                    $out .= '<span class="row" title="">';
+                    $out .= '<span class="md_row" title="">';
 
                     $out .= is_numeric($key)
-                        ? '<span class="number">'.$key.'</span>'
-                        : '<span class="string">"'.$key.'"</span>';
+                        ? '<span class="md_number">'.$key.'</span>'
+                        : '<span class="md_string">"'.$key.'"</span>';
 
-                    $out .= '<span class="operator"> => </span>';
+                    $out .= '<span class="md_operator"> => </span>';
                     $out .= $dumper->resolve($value);
                     $out .= '</span>';
                 }
@@ -81,7 +81,7 @@ class ArrayType extends Type
             }
         }
 
-        $out .= '<span class="br-'.$brId.' brackets">]</span>';
+        $out .= '<span class="md_br-'.$brId.' brackets">]</span>';
         $out .= '</span>';
 
         return $out;
