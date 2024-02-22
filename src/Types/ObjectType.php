@@ -74,16 +74,16 @@ class ObjectType extends Type
     {
         $out = '';
 
-        $separator = strrpos($class, '\\');
+        $separator = mb_strrpos($class, '\\');
 
         if ($separator > 0) {
-            $namespace = substr($class, 0, $separator);
-            $class = substr($class, $separator + 1);
+            $namespace = mb_substr($class, 0, $separator);
+            $class = mb_substr($class, $separator + 1);
 
             $out .= '<span class="md_namespace" title="namespace"';
 
-            if (static::$shortNamespaceLength < strlen($namespace) - 3) {
-                $shortNamespace = substr($namespace, 0, static::$shortNamespaceLength);
+            if (static::$shortNamespaceLength < mb_strlen($namespace) - 3) {
+                $shortNamespace = mb_substr($namespace, 0, static::$shortNamespaceLength);
 
                 $out .= ' data-ns="'.$namespace.'\\">'.$shortNamespace.'...';
             }
