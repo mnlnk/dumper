@@ -5,8 +5,11 @@ namespace Manuylenko\Dumper\Types;
 
 use Closure;
 use ReflectionFunction;
+use ReflectionIntersectionType;
+use ReflectionNamedType;
 use ReflectionObject;
 use Manuylenko\Dumper\Dumper;
+use ReflectionUnionType;
 
 class ObjectType extends Type
 {
@@ -34,7 +37,7 @@ class ObjectType extends Type
         $objId = (string) spl_object_id($object);
 
         $out  = '<span class="md_block md_object">';
-        $out .= ''.static::renderClass(get_class($object));
+        $out .= static::renderClass(get_class($object));
         $out .= ' <span class="md_ha-'.$objId.' md_hash" title="id">#'.$objId.'</span> ';
 
         if (in_array($object, static::$list)) {
@@ -203,18 +206,122 @@ class ObjectType extends Type
         // Статические переменные
         $out .= static::renderVariable($reflection->getStaticVariables(), 'use', $dumper);
 
-        // Возвращаемый тип
-        if ($type = $reflection->getReturnType()) {
+        // Возвращаемые типы
+        $types = static::getReturnTypes($reflection);
+
+        if (count($types) > 0) {
             $out .= '<span class="md_row">';
             $out .= '<span class="md_property">return</span>';
             $out .= '<span class="md_operator">: </span>';
-            $out .= '<span class="md_type">'.$type.'</span>';
+            $out .= static::renderReturnTypes($types);
             $out .= '</span>';
         }
 
         $out .= '</span>';
 
         return $out;
+    }
+
+    /**
+     * Рендерит возвращаемый тип.
+     *
+     * $type[0] -> builtin
+     * $type[1] -> names
+     */
+    protected static function renderType(array $type): string
+    {
+        $out = '';
+
+        if ($type[0]) {
+            $out .= '<span class="md_type">'.$type[1][0].'</span>';
+        }
+        else {
+            $out .= '<span class="md_block">';
+
+            if (count($type[1]) == 1) {
+                $out .= static::renderClass($type[1][0]);
+            }
+            else {
+                foreach ($type[1] as &$class) $class = static::renderClass($class);
+                $out .= implode(' &amp; ', $type[1]);
+            }
+
+            $out .= '</span>';
+        }
+
+        return $out;
+    }
+
+    /**
+     * Рендерит возвращаемые типы для объекта Closure.
+     */
+    protected static function renderReturnTypes(array $types): string
+    {
+        if (count($types) == 1) {
+             return static::renderType($types[0]);
+        }
+
+        $out = '';
+        $uid = Dumper::getUid();
+
+        $out .= '<span class="md_block">';
+        $out .= '<span class="md_br-'.$uid.' md_braces" title="">[</span>';
+        $out .= '<a class="md_to-'.$uid.' md_toggle" title="Expand">>></a>';
+        $out .= '<span class="md_content">';
+
+        foreach ($types as $type) {
+            $out .= '<span class="md_row">';
+            $out .= static::renderType($type);
+            $out .= '</span>';
+        }
+
+        $out .= '</span>';
+        $out .= '<span class="md_br-'.$uid.' md_braces" title="">]</span>';
+        $out .= '</span>';
+
+        return $out;
+    }
+
+    /**
+     * Получает список возвращаемых типов.
+     *
+     * Return:
+     *  [[true, ['string']]]                     // string
+     *  [[true, ['string']], [true, ['null']]]   // ?string
+     *  [[true, ['string']], [true, ['int']]]    // string|int
+     *  [[false, ['Iterator', 'Countable']]]     // Iterator&Countable
+     *  [[false, ['Closure']]]                   // Closure
+     *  [[false, ['Closure']], [true, ['null']]] // ?Closure
+     */
+    protected static function getReturnTypes(ReflectionFunction $ref): array
+    {
+        $types = [];
+        $return = $ref->getReturnType();
+
+        switch (true) {
+            case $return instanceof ReflectionNamedType:
+                $types[] = [$return->isBuiltin(), [$return->getName()]];
+                if ($return->allowsNull()) {
+                    $types[] = [true, ['null']];
+                }
+                break;
+            case $return instanceof ReflectionUnionType:
+                /** @var ReflectionNamedType $type */
+                foreach ($return->getTypes() as $type) {
+                    $types[] = [$type->isBuiltin(), [$type->getName()]];
+                }
+                break;
+            case $return instanceof ReflectionIntersectionType:
+                $names = [];
+                /** @var ReflectionNamedType $type */
+                foreach ($return->getTypes() as $type) {
+                    $names[] = $type->getName();
+                }
+                $types[] = [false, $names];
+                break;
+        }
+
+        return $types;
     }
 
     /**
