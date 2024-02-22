@@ -34,7 +34,7 @@ class ObjectType extends Type
         $objId = (string) spl_object_id($object);
 
         $out  = '<span class="md_block md_object">';
-        $out .= ''.static::renderClass($object);
+        $out .= ''.static::renderClass(get_class($object));
         $out .= ' <span class="md_ha-'.$objId.' md_hash" title="id">#'.$objId.'</span> ';
 
         if (in_array($object, static::$list)) {
@@ -70,11 +70,10 @@ class ObjectType extends Type
     /**
      * Рендерит пространство имен и имя класса.
      */
-    protected static function renderClass(object $object): string
+    protected static function renderClass(string $class): string
     {
         $out = '';
 
-        $class = get_class($object);
         $separator = strrpos($class, '\\');
 
         if ($separator > 0) {
