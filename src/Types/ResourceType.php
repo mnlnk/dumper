@@ -15,6 +15,7 @@ class ResourceType extends Type
     public static function render(Dumper $dumper, $resource): string
     {
         $out = '';
+
         $type = get_resource_type($resource);
         $uId = Dumper::getUid();
 
@@ -24,13 +25,13 @@ class ResourceType extends Type
         $out .= '<span class="md_type">'.$type.'</span> ';
         $out .= '<span class="md_br-'.$uId.' md_braces">{</span>';
 
-        $getData = str_replace('-', '', 'get'.ucfirst($type).'Data');
+        $getDataMethod = str_replace('-', '', 'get'.ucfirst($type).'Data');
 
-        if (method_exists(__CLASS__, $getData)) {
+        if (method_exists(__CLASS__, $getDataMethod)) {
             $out .= '<a class="md_to-'.$uId.' md_toggle">>></a>';
             $out .= '<span class="md_content">';
 
-            foreach (self::$getData($resource) as $key => $value) {
+            foreach (static::$getDataMethod($resource) as $key => $value) {
                 $out .= '<span class="md_row">';
                 $out .= '<span class="md_property">'.$key.'</span>';
                 $out .= '<span class="md_operator">: </span>';

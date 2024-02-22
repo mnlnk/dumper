@@ -14,8 +14,10 @@ class NumberType extends Type
             if ($num == (int) $num) {
                 $num .= '.0';
             }
+
             $type = 'float';
-        } else {
+        }
+        else {
             $type = 'int';
         }
 

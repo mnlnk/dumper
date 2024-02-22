@@ -37,19 +37,20 @@ class ArrayType extends Type
         $out = '<span class="md_block md_array" title="Массив: '.$count.' '.$ends.'">';
         $out .= '<span class="md_br-'.$brId.' md_brackets">[</span>';
 
-        if (in_array($array, self::$list)) {
-            $arrId = array_keys(self::$list, $array)[0];
-            $recId = self::$br[$arrId];
+        if (in_array($array, static::$list)) {
+            $arrId = array_keys(static::$list, $array)[0];
+            $recId = static::$br[$arrId];
 
             $out .= '<span class="md_re-'.$recId.' md_recursion" title="Рекурсия массива">&recursion</span>';
-        } else {
+        }
+        else {
             if ($count > 0) {
                 $out .= '<a class="md_to-'.$brId.' md_toggle" title="Развернуть">>></a>';
                 $out .= '<span class="md_content">';
 
-                self::$list[] = $array;
-                $arrId = array_keys(self::$list, $array)[0];
-                self::$br[$arrId] = $brId;
+                static::$list[] = $array;
+                $arrId = array_keys(static::$list, $array)[0];
+                static::$br[$arrId] = $brId;
 
                 foreach ($array as $key => $value) {
                     $out .= '<span class="md_row" title="">';
@@ -63,8 +64,8 @@ class ArrayType extends Type
                     $out .= '</span>';
                 }
 
-                unset(self::$br[$arrId]);
-                array_pop(self::$list);
+                unset(static::$br[$arrId]);
+                array_pop(static::$list);
 
                 $out .= '</span>';
             }

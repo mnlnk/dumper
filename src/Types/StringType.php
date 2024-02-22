@@ -23,7 +23,7 @@ class StringType extends Type
      */
     public static function render(string $string): string
     {
-        $length = mb_strlen($string, self::$charset);
+        $length = mb_strlen($string, static::$charset);
         $last = substr(strval($length), -1);
 
         $ends = match ($last) {
@@ -34,16 +34,18 @@ class StringType extends Type
 
         $out = '<span class="md_block md_string" title="Строка: '.$length.' '.$ends.'">';
 
-        if ($length > self::$maxlength) {
-            $collapse = self::htmlspecialchars(self::replaceNel($string));
-            $expand = self::htmlspecialchars(self::replaceNel(mb_substr($string, 0, self::$maxlength - 1, self::$charset)));
+        if ($length > static::$maxlength) {
             $uId = Dumper::getUid();
+
+            $collapse = static::htmlspecialchars(static::replaceNel($string));
+            $expand = static::htmlspecialchars(static::replaceNel(mb_substr($string, 0, static::$maxlength - 1, static::$charset)));
 
             $out .= '<span class="md_collapse">"'.$collapse.'" </span>';
             $out .= '<span class="md_expand">"'.$expand.'..." </span>';
             $out .= '<a class="md_to-'.$uId.' md_toggle" title="Развернуть">>></a>';
-        } else {
-            $out .= '"'.self::replaceNel($string).'"';
+        }
+        else {
+            $out .= '"'.static::replaceNel($string).'"';
         }
 
         $out .= '</span>';
@@ -56,7 +58,7 @@ class StringType extends Type
      */
     protected static function htmlspecialchars(string $string): string
     {
-        return htmlspecialchars($string, ENT_QUOTES | ENT_SUBSTITUTE, self::$charset);
+        return htmlspecialchars($string, ENT_QUOTES | ENT_SUBSTITUTE, static::$charset);
     }
 
     /**

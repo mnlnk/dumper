@@ -34,17 +34,17 @@ class Dumper
     {
         $out = '';
 
-        if (! self::$resourcesLoaded) {
+        if (!static::$resourcesLoaded) {
             $css = file_get_contents(__DIR__.'/Resources/Css/light_style.min.css');
             $js = file_get_contents(__DIR__.'/Resources/Js/script.min.js');
 
-            $out .= join(array('<style>', trim($css), '</style>', ''));
-            $out .= join(array('<script>', trim($js), '</script>', ''));
+            $out .= join(['<style>', trim($css), '</style>', '']);
+            $out .= join(['<script>', trim($js), '</script>', '']);
 
-            self::$resourcesLoaded = true;
+            static::$resourcesLoaded = true;
         }
 
-        $id = self::getUId();
+        $id = static::getUId();
 
         $out .= '<div id="md_id-'.$id.'" class="mnlnk_dump">';
         $out .= '<span class="md_row">';
@@ -64,8 +64,8 @@ class Dumper
         while (true) {
             $uId = substr(md5((string) mt_rand(1, 100000)), -4);
 
-            if (! in_array($uId, self::$uId)) {
-                self::$uId[] = $uId;
+            if (!in_array($uId, static::$uId)) {
+                static::$uId[] = $uId;
 
                 return $uId;
             }
@@ -75,7 +75,7 @@ class Dumper
     /**
      * Решает как рендерить данные в зависимости от их типа.
      */
-    public function resolve(mixed$var): string
+    public function resolve(mixed $var): string
     {
         return match (strtolower(gettype($var))) {
             'null' => NullType::render(),
