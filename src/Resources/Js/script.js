@@ -2,30 +2,34 @@
 
 let mnlnkRoots = [];
 
-let mnlnkDumpInit = window.mnlnkDumpInit || function (rId) {
+let mnlnkDumpInit = window.mnlnkDumpInit || function (rootId) {
     let _blocks = [];
-    let _root = document.getElementById('md_id-' + rId);
+    let _root = document.getElementById('md_id-' + rootId);
 
     mnlnkRoots.push(_root);
 
-    let _toggle = (e, s) => {
-        e.querySelectorAll(s).forEach(e1 => {
-            e1.addEventListener('click', event => {
-                let el = event.target;
-                let parent = el.parentElement;
-                const id = el.classList[0].slice(6);
+    let _toggle = (elem, sel) => {
+        elem.querySelectorAll(sel).forEach(el => {
+            el.addEventListener('click', event => {
+                let target = event.target;
+                let parent = target.parentElement;
+                let id = target.classList[0].slice(6);
 
                 parent.classList.toggle('md_open');
                 if (parent.classList.contains('md_open')) {
-                    el.innerText = '<<';
-                    el.title = 'Свернуть';
-                } else {
-                    el.innerText = '>>';
-                    el.title = 'Развернуть';
+                    target.innerText = '<<';
+                    target.title = 'Свернуть';
+                }
+                else {
+                    target.innerText = '>>';
+                    target.title = 'Развернуть';
                 }
 
-                if (parent.classList.contains('md_string')) return;
-                if (_blocks.includes(id)) return;
+                if (parent.classList.contains('md_string'))
+                    return;
+
+                if (_blocks.includes(id))
+                    return;
 
                 _toggle(parent, ':scope > .md_content > .md_row > .md_block > .md_toggle');
                 _braces(parent, ':scope > .md_br-' + id);
@@ -38,71 +42,71 @@ let mnlnkDumpInit = window.mnlnkDumpInit || function (rId) {
         });
     };
 
-    let _braces = (e, s) => {
-        e.querySelectorAll(s).forEach(e2 => {
-            const bId = e2.classList[0].slice(6);
+    let _braces = (elem, sel) => {
+        elem.querySelectorAll(sel).forEach(el => {
+            let bracesId = el.classList[0].slice(6);
 
-            e2.addEventListener('mouseenter', event => {
-                event.target.parentElement.querySelectorAll(':scope .md_br-' + bId).forEach(e3 => {
-                    e3.classList.add('md_highlight');
+            el.addEventListener('mouseenter', event => {
+                event.target.parentElement.querySelectorAll(':scope .md_br-' + bracesId).forEach(e => {
+                    e.classList.add('md_highlight');
                 });
             });
 
-            e2.addEventListener('mouseleave', event => {
-                event.target.parentElement.querySelectorAll(':scope .md_br-' + bId).forEach(e4 => {
-                    e4.classList.remove('md_highlight');
+            el.addEventListener('mouseleave', event => {
+                event.target.parentElement.querySelectorAll(':scope .md_br-' + bracesId).forEach(e => {
+                    e.classList.remove('md_highlight');
                 });
             });
         });
     };
 
-    let _hash = (e, s) => {
-        e.querySelectorAll(s).forEach(e2 => {
-            const hId = e2.classList[0].slice(6);
+    let _hash = (elem, sel) => {
+        elem.querySelectorAll(sel).forEach(el => {
+            let hashId = el.classList[0].slice(6);
 
-            e2.addEventListener('mouseenter', event => {
+            el.addEventListener('mouseenter', event => {
                 mnlnkRoots.forEach(mRoot => {
-                    mRoot.querySelectorAll(':scope .md_ha-' + hId).forEach(e3 => {
-                        e3.classList.add('md_highlight');
+                    mRoot.querySelectorAll(':scope .md_ha-' + hashId).forEach(e => {
+                        e.classList.add('md_highlight');
                     })
                 });
             });
 
-            e2.addEventListener('mouseleave', event => {
+            el.addEventListener('mouseleave', event => {
                 mnlnkRoots.forEach(mRoot => {
-                    mRoot.querySelectorAll(':scope .md_ha-' + hId).forEach(e4 => {
-                        e4.classList.remove('md_highlight');
+                    mRoot.querySelectorAll(':scope .md_ha-' + hashId).forEach(e => {
+                        e.classList.remove('md_highlight');
                     })
                 });
             });
         });
     };
 
-    let _namespace = (e, s) => {
-        e.querySelectorAll(s).forEach(e1 => {
-            e1.addEventListener('click', event => {
-                let el = event.target;
-                let iText = el.innerText;
+    let _namespace = (elem, sel) => {
+        elem.querySelectorAll(sel).forEach(el => {
+            el.addEventListener('click', event => {
+                let target = event.target;
+                let text = target.innerText;
 
-                el.innerText = el.dataset.ns;
-                el.dataset.ns = iText;
+                target.innerText = target.dataset.ns;
+                target.dataset.ns = text;
             });
         });
     };
 
-    let _recursion = (e, s) => {
-        e.querySelectorAll(s).forEach(e2 => {
-            const rId = e2.classList[0].slice(3);
+    let _recursion = (elem, sel) => {
+        elem.querySelectorAll(sel).forEach(el => {
+            let recursionId = el.classList[0].slice(3);
 
-            e2.addEventListener('mouseenter', event => {
-                _root.querySelectorAll(':scope .md_br-' + rId).forEach(e3 => {
-                    e3.classList.toggle('md_highlight');
+            el.addEventListener('mouseenter', event => {
+                _root.querySelectorAll(':scope .md_br-' + recursionId).forEach(e => {
+                    e.classList.toggle('md_highlight');
                 });
             });
 
-            e2.addEventListener('mouseleave', event => {
-                _root.querySelectorAll(':scope .md_br-' + rId).forEach(e4 => {
-                    e4.classList.remove('md_highlight');
+            el.addEventListener('mouseleave', event => {
+                _root.querySelectorAll(':scope .md_br-' + recursionId).forEach(e => {
+                    e.classList.remove('md_highlight');
                 });
             });
         });
