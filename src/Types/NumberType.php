@@ -6,7 +6,7 @@ namespace Manuylenko\Dumper\Types;
 class NumberType extends Type
 {
     /**
-     * ..
+     * Рендерит число.
      */
     public static function render(int|float $num): string
     {

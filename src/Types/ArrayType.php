@@ -8,18 +8,18 @@ use Manuylenko\Dumper\Dumper;
 class ArrayType extends Type
 {
     /**
-     * ..
+     * Массив массивов для поиска рекурсии.
      */
     protected static array $list = [];
 
     /**
-     * ..
+     * Массив идентификаторов скобок массивов.
      */
     protected static array $br = [];
 
 
     /**
-     * ..
+     * Рендерит массив.
      */
     public static function render(Dumper $dumper, array $array): string
     {

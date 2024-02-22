@@ -11,23 +11,23 @@ use Manuylenko\Dumper\Dumper;
 class ObjectType extends Type
 {
     /**
-     * ..
+     * Длинна пространства имен в сокращенном виде.
      */
     protected static int $shortNamespaceLength = 4;
 
     /**
-     * ..
+     * Массив объектов для поиска рекурсии.
      */
     protected static array $list = [];
 
     /**
-     * ..
+     * Массив идентификаторов скобок объектов.
      */
     protected static array $br = [];
 
 
     /**
-     * ..
+     * Рендерит объект.
      */
     public static function render(Dumper $dumper, object $object): string
     {
@@ -68,7 +68,7 @@ class ObjectType extends Type
     }
 
     /**
-     * ..
+     * Рендерит пространство имен и имя класса.
      */
     protected static function renderClass(object $object): string
     {
@@ -99,7 +99,7 @@ class ObjectType extends Type
     }
 
     /**
-     * ..
+     * Рендерит содержимое объекта.
      */
     protected static function renderObject(object$object, string $uId, Dumper $dumper): string
     {
@@ -162,7 +162,7 @@ class ObjectType extends Type
     }
 
     /**
-     * ..
+     * Рендерит содержимое объекта Closure.
      */
     protected static function renderClosure(object $object, string $uId, Dumper $dumper): string
     {
@@ -210,7 +210,7 @@ class ObjectType extends Type
     }
 
     /**
-     * ..
+     * Рендерит значения переменных объекта Closure.
      */
     protected static function renderVariable(array $vars, string $type, Dumper $dumper): string
     {

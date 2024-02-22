@@ -6,7 +6,7 @@ namespace Manuylenko\Dumper\Types;
 class UnknownType extends Type
 {
     /**
-     * ..
+     * Ренднрит неизвестный тип.
      */
     public static function render(): string
     {

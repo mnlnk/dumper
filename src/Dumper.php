@@ -15,20 +15,20 @@ use Manuylenko\Dumper\Types\UnknownType;
 class Dumper
 {
     /**
-     * ..
+     * Массив уникальных идентификаторов.
      *
      * @var string[]
      */
     protected static array $uId = [];
 
     /**
-     * ..
+     * Указывает, что ресурсы (js, сcs) были загружены.
      */
     protected static bool $resourcesLoaded = false;
 
 
     /**
-     * ..
+     * Выводит дамп данных.
      */
     public function dump(mixed $var): void
     {
@@ -57,7 +57,7 @@ class Dumper
     }
 
     /**
-     * ..
+     * Получает уникальный идентификатор.
      */
     public static function getUId(): string
     {
@@ -73,7 +73,7 @@ class Dumper
     }
 
     /**
-     * ..
+     * Решает как рендерить данные в зависимости от их типа.
      */
     public function resolve(mixed$var): string
     {

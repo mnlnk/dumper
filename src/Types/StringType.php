@@ -8,18 +8,18 @@ use Manuylenko\Dumper\Dumper;
 class StringType extends Type
 {
     /**
-     * ..
+     * Кодировка строк.
      */
     protected static string $charset = 'UTF-8';
 
     /**
-     * ..
+     * Максимальная длинна строки в неразвернутом виде.
      */
     protected static int $maxlength = 60;
 
 
     /**
-     * ..
+     * Рендерит строку.
      */
     public static function render(string $string): string
     {
@@ -52,7 +52,7 @@ class StringType extends Type
     }
 
     /**
-     * Преобразует спец символы.
+     * Преобразует спец. символы в строке.
      */
     protected static function htmlspecialchars(string $string): string
     {
@@ -60,7 +60,7 @@ class StringType extends Type
     }
 
     /**
-     * ..
+     * Заменяет символы перевода строки на <br>.
      */
     protected static function replaceNel(string $string): string
     {

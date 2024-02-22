@@ -6,7 +6,7 @@ namespace Manuylenko\Dumper\Types;
 class BooleanType extends Type
 {
     /**
-     * ..
+     * Рендерит значение типа bool.
      */
     public static function render(bool $bool): string
     {

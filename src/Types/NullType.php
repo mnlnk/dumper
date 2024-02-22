@@ -6,7 +6,7 @@ namespace Manuylenko\Dumper\Types;
 class NullType extends Type
 {
     /**
-     * ..
+     * Рендерит нулевое значение.
      */
     public static function render(): string
     {

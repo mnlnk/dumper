@@ -8,7 +8,7 @@ use Manuylenko\Dumper\Dumper;
 class ResourceType extends Type
 {
     /**
-     * ..
+     * Рендерит ресурс.
      *
      * @param resource $resource
      */
@@ -48,22 +48,12 @@ class ResourceType extends Type
     }
 
     /**
-     * ..
+     * Получает основную информацию о потоке.
      *
      * @param resource $stream
      */
     protected static function getStreamData($stream): array
     {
-        return stream_get_meta_data($stream) + array('context' => self::getStreamContextData($stream));
-    }
-
-    /**
-     * ..
-     *
-     * @param resource $stream
-     */
-    protected static function getStreamContextData($stream): array
-    {
-        return stream_context_get_params($stream);
+        return stream_get_meta_data($stream) + ['context' => stream_context_get_params($stream)];
     }
 }
