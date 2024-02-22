@@ -96,7 +96,7 @@ let mnlnkDumpInit = window.mnlnkDumpInit || function (rootId) {
 
     let _recursion = (elem, sel) => {
         elem.querySelectorAll(sel).forEach(el => {
-            let recursionId = el.classList[0].slice(3);
+            let recursionId = el.classList[0].slice(6);
 
             el.addEventListener('mouseenter', event => {
                 _root.querySelectorAll(':scope .md_br-' + recursionId).forEach(e => {
