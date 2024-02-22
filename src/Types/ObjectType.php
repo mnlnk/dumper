@@ -233,7 +233,7 @@ class ObjectType extends Type
             $out .= '<span class="md_block">';
             $out .= '<span class="md_property">'.$type.'</span>';
             $out .= '<span class="md_operator">: </span>';
-            $out .= '<span class="md_br-'.$uid.' md_braces" title="variables: '.$count.'">{</span>';
+            $out .= '<span class="md_br-'.$uid.' md_braces" title="variables: '.$count.'">[</span>';
             $out .= '<a class="md_to-'.$uid.' md_toggle" title="Expand">>></a>';
             $out .= '<span class="md_content">';
 
@@ -264,7 +264,7 @@ class ObjectType extends Type
             }
 
             $out .= '</span>';
-            $out .= '<span class="md_br-'.$uid.' md_braces" title="variables: '.$count.'">}</span>';
+            $out .= '<span class="md_br-'.$uid.' md_braces" title="variables: '.$count.'">]</span>';
             $out .= '</span>';
             $out .= '</span>';
         }
