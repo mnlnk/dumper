@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Manuylenko\Dumper\Types;
 
@@ -7,12 +8,11 @@ use Manuylenko\Dumper\Dumper;
 class ResourceType extends Type
 {
     /**
-     * @param resource $resource
-     * @param Dumper $dumper
+     * ..
      *
-     * @return string
+     * @param resource $resource
      */
-    public static function render(Dumper $dumper, $resource)
+    public static function render(Dumper $dumper, $resource): string
     {
         $out = '';
         $type = get_resource_type($resource);
@@ -48,21 +48,21 @@ class ResourceType extends Type
     }
 
     /**
-     * @param resource $stream
+     * ..
      *
-     * @return array
+     * @param resource $stream
      */
-    protected static function getStreamData($stream)
+    protected static function getStreamData($stream): array
     {
         return stream_get_meta_data($stream) + array('context' => self::getStreamContextData($stream));
     }
 
     /**
-     * @param resource $stream
+     * ..
      *
-     * @return array
+     * @param resource $stream
      */
-    protected static function getStreamContextData($stream)
+    protected static function getStreamContextData($stream): array
     {
         return stream_context_get_params($stream);
     }

@@ -1,22 +1,25 @@
 <?php
+declare(strict_types=1);
 
 namespace Manuylenko\Dumper\Types;
 
 abstract class Type
 {
     /**
-     * @var array
+     * ..
+     *
+     * @var string[]
      */
-    protected static $uid = [];
+    protected static array $uid = [];
 
 
     /**
-     * @return string
+     * ..
      */
-    protected static function getUid()
+    protected static function getUid(): string
     {
         while (true) {
-            $uid = substr(md5(rand(1, 100000)), -4);
+            $uid = substr(md5((string) mt_rand(1, 100000)), -4);
 
             if (! in_array($uid, self::$uid)) {
                 self::$uid[] = $uid;

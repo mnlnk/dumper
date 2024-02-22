@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Manuylenko\Dumper\Types;
 
@@ -10,30 +11,27 @@ use Manuylenko\Dumper\Dumper;
 class ObjectType extends Type
 {
     /**
-     * @var int
+     * ..
      */
-    protected static $shortNamespaceLength = 4;
+    protected static int $shortNamespaceLength = 4;
 
     /**
-     * @var array
+     * ..
      */
-    protected static $list = [];
+    protected static array $list = [];
 
     /**
-     * @var array
+     * ..
      */
-    protected static $br = [];
+    protected static array $br = [];
 
 
     /**
-     * @param Dumper $dumper
-     * @param object $object
-     *
-     * @return string
+     * ..
      */
-    public static function render(Dumper $dumper, $object)
+    public static function render(Dumper $dumper, object $object): string
     {
-        $objId = self::getObjectId($object);
+        $objId = (string) spl_object_id($object);
 
         $out  = '<span class="md_block md_object">';
         $out .= ''.self::renderClass($object);
@@ -49,18 +47,14 @@ class ObjectType extends Type
         } else {
             $brId = static::getUid();
 
-            array_push(self::$list, $object);
+            self::$list[] = $object;
             self::$br[$objId] = $brId;
 
             $out .= '<span class="md_br-'.$brId.' md_braces">{</span>';
 
-            switch (true) {
-                case $object instanceof Closure:
-                    $out .= self::renderClosure($object, $brId, $dumper);
-                    break;
-                default:
-                    $out .= self::renderObject($object, $brId, $dumper);
-            }
+            $out .= $object instanceof Closure
+                ? self::renderClosure($object, $brId, $dumper)
+                : self::renderObject($object, $brId, $dumper);
 
             $out .= '<span class="md_br-'.$brId.' md_braces">}</span>';
 
@@ -74,11 +68,9 @@ class ObjectType extends Type
     }
 
     /**
-     * @param object $object
-     *
-     * @return string
+     * ..
      */
-    protected static function renderClass($object)
+    protected static function renderClass(object $object): string
     {
         $out = '';
 
@@ -107,27 +99,9 @@ class ObjectType extends Type
     }
 
     /**
-     * @param object $object
-     *
-     * @return int|string
+     * ..
      */
-    protected static function getObjectId($object)
-    {
-        if (version_compare('7.2', phpversion(), '<=')) {
-            return spl_object_id($object);
-        } else {
-            return substr(md5(spl_object_hash($object)), -4);
-        }
-    }
-
-    /**
-     * @param object $object
-     * @param string $uId
-     * @param Dumper $dumper
-     *
-     * @return string
-     */
-    protected static function renderObject($object, $uId, Dumper $dumper)
+    protected static function renderObject(object$object, string $uId, Dumper $dumper): string
     {
         $out = '';
         $props = (new ReflectionObject($object))->getProperties();
@@ -160,8 +134,6 @@ class ObjectType extends Type
                         break;
                 }
 
-                $prop->setAccessible(true);
-
                 $out .= '<span class="md_row">';
 
                 if ($prop->isStatic()) {
@@ -190,13 +162,9 @@ class ObjectType extends Type
     }
 
     /**
-     * @param object $object
-     * @param string $uId
-     * @param Dumper $dumper
-     *
-     * @return string
+     * ..
      */
-    protected static function renderClosure($object, $uId, Dumper $dumper)
+    protected static function renderClosure(object $object, string $uId, Dumper $dumper): string
     {
         $out = '';
         $reflection = new ReflectionFunction($object);
@@ -242,13 +210,9 @@ class ObjectType extends Type
     }
 
     /**
-     * @param array $vars
-     * @param string $type
-     * @param Dumper $dumper
-     *
-     * @return string
+     * ..
      */
-    protected static function renderVariable(array $vars, $type, Dumper $dumper)
+    protected static function renderVariable(array $vars, string $type, Dumper $dumper): string
     {
         $out = '';
         $count = count($vars);

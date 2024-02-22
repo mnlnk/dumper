@@ -1,13 +1,14 @@
 <?php
+declare(strict_types=1);
 
 namespace Manuylenko\Dumper\Types;
 
 class NullType extends Type
 {
     /**
-     * @return string
+     * ..
      */
-    public static function render() 
+    public static function render(): string
     {
         return '<span class="md_null">null</span>';
     }

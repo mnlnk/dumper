@@ -1,42 +1,34 @@
 <?php
+declare(strict_types=1);
 
 namespace Manuylenko\Dumper\Types;
 
 class StringType extends Type
 {
     /**
-     * @var string
+     * ..
      */
-    protected static $charset = 'UTF-8';
+    protected static string $charset = 'UTF-8';
 
     /**
-     * @var int
+     * ..
      */
-    protected static $maxlength = 60;
+    protected static int $maxlength = 60;
 
 
     /**
-     * @param string $string
-     *
-     * @return string
+     * ..
      */
-    public static function render($string)
+    public static function render(string $string): string
     {
         $length = mb_strlen($string, self::$charset);
         $last = substr(strval($length), -1);
 
-        switch ($last) {
-            case '1':
-                $ends = 'символ';
-                break;
-            case '2':
-            case '3':
-            case '4':
-                $ends = 'символа';
-                break;
-            default:
-                $ends = 'символов';
-        }
+        $ends = match ($last) {
+            '1' => 'символ',
+            '2', '3', '4' => 'символа',
+            default => 'символов'
+        };
 
         $out = '<span class="md_block md_string" title="Строка: '.$length.' '.$ends.'">';
 
@@ -59,22 +51,16 @@ class StringType extends Type
 
     /**
      * Преобразует спец символы.
-     *
-     * @param string $string
-     *
-     * @return string
      */
-    protected static function htmlspecialchars($string)
+    protected static function htmlspecialchars(string $string): string
     {
         return htmlspecialchars($string, ENT_QUOTES | ENT_SUBSTITUTE, self::$charset);
     }
 
     /**
-     * @param string $string
-     *
-     * @return string
+     * ..
      */
-    protected static function replaceNel($string)
+    protected static function replaceNel(string $string): string
     {
         $string = str_replace(
             [

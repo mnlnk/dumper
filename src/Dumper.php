@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Manuylenko\Dumper;
 
@@ -14,22 +15,22 @@ use Manuylenko\Dumper\Types\UnknownType;
 class Dumper
 {
     /**
-     * @var array
-     */
-    protected static $id = [];
-
-    /**
-     * @var bool
-     */
-    protected static $resourcesLoaded = false;
-
-
-    /**
-     * @param mixed $var
+     * ..
      *
-     * @return void
+     * @var string[]
      */
-    public function dump($var)
+    protected static array $id = [];
+
+    /**
+     * ..
+     */
+    protected static bool $resourcesLoaded = false;
+
+
+    /**
+     * ..
+     */
+    public function dump(mixed $var): void
     {
         $out = '';
 
@@ -56,12 +57,12 @@ class Dumper
     }
 
     /**
-     * @return string
+     * ..
      */
-    public static function getId()
+    public static function getId(): string
     {
         while (true) {
-            $id = substr(md5(rand(1, 100000)), -4);
+            $id = substr(md5((string) mt_rand(1, 100000)), -4);
 
             if (! in_array($id, self::$id)) {
                 self::$id[] = $id;
@@ -72,31 +73,19 @@ class Dumper
     }
 
     /**
-     * @param mixed $var
-     *
-     * @return string
+     * ..
      */
-    public function resolve($var)
+    public function resolve(mixed$var): string
     {
-        switch (strtolower(gettype($var))) {
-            case 'null':
-                return NullType::render();
-            case 'boolean':
-                return BooleanType::render($var);
-            case 'integer':
-            case 'double':
-                return NumberType::render($var);
-            case 'string':
-                return StringType::render($var);
-            case 'array':
-                return ArrayType::render($this, $var);
-            case 'object':
-                return ObjectType::render($this, $var);
-            case 'resource':
-            case 'resource (closed)': // since 7.2.0
-                return ResourceType::render($this, $var);
-            default:
-                return UnknownType::render();
-        }
+        return match (strtolower(gettype($var))) {
+            'null' => NullType::render(),
+            'boolean' => BooleanType::render($var),
+            'integer', 'double' => NumberType::render($var),
+            'string' => StringType::render($var),
+            'array' => ArrayType::render($this, $var),
+            'object' => ObjectType::render($this, $var),
+            'resource', 'resource (closed)' => ResourceType::render($this, $var),
+            default => UnknownType::render(),
+        };
     }
 }

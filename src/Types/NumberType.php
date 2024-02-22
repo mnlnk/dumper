@@ -1,21 +1,20 @@
 <?php
+declare(strict_types=1);
 
 namespace Manuylenko\Dumper\Types;
 
 class NumberType extends Type
 {
     /**
-     * @param int|double $num
-     *
-     * @return string
+     * ..
      */
-    public static function render($num)
+    public static function render(int|float $num): string
     {
         if (is_double($num)) {
             if ($num == (int) $num) {
                 $num .= '.0';
             }
-            $type = 'double';
+            $type = 'float';
         } else {
             $type = 'int';
         }

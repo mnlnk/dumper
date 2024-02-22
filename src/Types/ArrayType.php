@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Manuylenko\Dumper\Types;
 
@@ -7,39 +8,29 @@ use Manuylenko\Dumper\Dumper;
 class ArrayType extends Type
 {
     /**
-     * @var array
+     * ..
      */
-    protected static $list = [];
+    protected static array $list = [];
 
     /**
-     * @var array
+     * ..
      */
-    protected static $br = [];
+    protected static array $br = [];
 
 
     /**
-     * @param Dumper $dumper
-     * @param array $array
-     *
-     * @return string
+     * ..
      */
-    public static function render(Dumper $dumper, $array)
+    public static function render(Dumper $dumper, array $array): string
     {
         $count = count($array);
         $last = substr(strval($count), -1);
 
-        switch ($last) {
-            case '1':
-                $ends = 'элемент';
-                break;
-            case '2':
-            case '3':
-            case '4':
-                $ends = 'элемента';
-                break;
-            default:
-                $ends = 'элементов';
-        }
+        $ends = match ($last) {
+            '1' => 'элемент',
+            '2', '3', '4' => 'элемента',
+            default => 'элементов'
+        };
 
         $brId = static::getUid();
 
@@ -58,7 +49,7 @@ class ArrayType extends Type
                 $out .= '<a class="md_to-'.$brId.' md_toggle" title="Развернуть">>></a>';
                 $out .= '<span class="md_content">';
 
-                array_push(self::$list, $array);
+                self::$list[] = $array;
                 $arrId = array_keys(self::$list, $array)[0];
                 self::$br[$arrId] = $brId;
 
