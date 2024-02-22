@@ -35,7 +35,7 @@ class ResourceType extends Type
                 $out .= '<span class="md_row">';
                 $out .= '<span class="md_property">'.$key.'</span>';
                 $out .= '<span class="md_operator">: </span>';
-                $out .= '<span class="md_type">'.$dumper->resolve($value).'</span> ';
+                $out .= $dumper->resolve($value);
                 $out .= '</span>';
             }
 
