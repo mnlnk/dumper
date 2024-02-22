@@ -10,6 +10,6 @@ class BooleanType extends Type
      */
     public static function render(bool $bool): string
     {
-        return '<span class="md_boolean" title="Тип: bool">'.($bool ? 'true' : 'false').'</span>';
+        return '<span class="md_boolean" title="bool">'.($bool ? 'true' : 'false').'</span>';
     }
 }

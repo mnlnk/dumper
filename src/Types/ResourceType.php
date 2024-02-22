@@ -20,15 +20,15 @@ class ResourceType extends Type
         $uId = Dumper::getUid();
 
         $out .= '<span class="md_block md_object">';
-        $out .= '<span class="md_resource" title="Ресурс">Resource </span>';
+        $out .= '<span class="md_resource" title="resource">Resource </span>';
         $out .= '<span class="md_operator">: </span>';
         $out .= '<span class="md_type">'.$type.'</span> ';
-        $out .= '<span class="md_br-'.$uId.' md_braces">{</span>';
+        $out .= '<span class="md_br-'.$uId.' md_braces" title="resource">{</span>';
 
         $getDataMethod = str_replace('-', '', 'get'.ucfirst($type).'Data');
 
         if (method_exists(__CLASS__, $getDataMethod)) {
-            $out .= '<a class="md_to-'.$uId.' md_toggle">>></a>';
+            $out .= '<a class="md_to-'.$uId.' md_toggle" title="Expand">>></a>';
             $out .= '<span class="md_content">';
 
             foreach (static::$getDataMethod($resource) as $key => $value) {
@@ -42,7 +42,7 @@ class ResourceType extends Type
             $out .= '</span>';
         }
 
-        $out .= '<span class="md_br-'.$uId.' md_braces">}</span>';
+        $out .= '<span class="md_br-'.$uId.' md_braces" title="resource">}</span>';
         $out .= '</span>';
 
         return $out;

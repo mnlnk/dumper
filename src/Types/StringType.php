@@ -24,15 +24,8 @@ class StringType extends Type
     public static function render(string $string): string
     {
         $length = mb_strlen($string, static::$charset);
-        $last = substr(strval($length), -1);
 
-        $ends = match ($last) {
-            '1' => 'символ',
-            '2', '3', '4' => 'символа',
-            default => 'символов'
-        };
-
-        $out = '<span class="md_block md_string" title="Строка: '.$length.' '.$ends.'">';
+        $out = '<span class="md_block md_string" title="string: '.$length.'">';
 
         if ($length > static::$maxlength) {
             $uId = Dumper::getUid();
@@ -42,7 +35,7 @@ class StringType extends Type
 
             $out .= '<span class="md_collapse">"'.$collapse.'" </span>';
             $out .= '<span class="md_expand">"'.$expand.'..." </span>';
-            $out .= '<a class="md_to-'.$uId.' md_toggle" title="Развернуть">>></a>';
+            $out .= '<a class="md_to-'.$uId.' md_toggle" title="Expand">>></a>';
         }
         else {
             $out .= '"'.static::replaceNel($string).'"';
@@ -73,9 +66,9 @@ class StringType extends Type
                 "\n"
             ],
             [
-                '<span class="md_nel" title="Перенос строки Windows">\r\n</span><br>',
-                '<span class="md_nel" title="Перенос строки MacOS">\r</span><br>',
-                '<span class="md_nel" title="Перенос строки Unix">\n</span><br>',
+                '<span class="md_nel" title="windows">\r\n</span><br>',
+                '<span class="md_nel" title="mac">\r</span><br>',
+                '<span class="md_nel" title="unix">\n</span><br>',
             ],
             $string
         );

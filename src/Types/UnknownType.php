@@ -10,6 +10,6 @@ class UnknownType extends Type
      */
     public static function render(): string
     {
-        return '<span class="md_unknown">Неизвестный тип</span>';
+        return '<span class="md_unknown" title="unknown">Unknown</span>';
     }
 }

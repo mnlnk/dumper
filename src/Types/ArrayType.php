@@ -24,28 +24,20 @@ class ArrayType extends Type
     public static function render(Dumper $dumper, array $array): string
     {
         $count = count($array);
-        $last = substr(strval($count), -1);
-
-        $ends = match ($last) {
-            '1' => 'элемент',
-            '2', '3', '4' => 'элемента',
-            default => 'элементов'
-        };
-
         $brId = Dumper::getUid();
 
-        $out = '<span class="md_block md_array" title="Массив: '.$count.' '.$ends.'">';
-        $out .= '<span class="md_br-'.$brId.' md_brackets">[</span>';
+        $out = '<span class="md_block md_array">';
+        $out .= '<span class="md_br-'.$brId.' md_brackets" title="array: '.$count.'">[</span>';
 
         if (in_array($array, static::$list)) {
             $arrId = array_keys(static::$list, $array)[0];
             $recId = static::$br[$arrId];
 
-            $out .= '<span class="md_re-'.$recId.' md_recursion" title="Рекурсия массива">&recursion</span>';
+            $out .= '<span class="md_re-'.$recId.' md_recursion" title="recursion">&recursion</span>';
         }
         else {
             if ($count > 0) {
-                $out .= '<a class="md_to-'.$brId.' md_toggle" title="Развернуть">>></a>';
+                $out .= '<a class="md_to-'.$brId.' md_toggle" title="Expand">>></a>';
                 $out .= '<span class="md_content">';
 
                 static::$list[] = $array;
@@ -53,7 +45,7 @@ class ArrayType extends Type
                 static::$br[$arrId] = $brId;
 
                 foreach ($array as $key => $value) {
-                    $out .= '<span class="md_row" title="">';
+                    $out .= '<span class="md_row">';
 
                     $out .= is_numeric($key)
                         ? '<span class="md_number">'.$key.'</span>'
@@ -71,7 +63,7 @@ class ArrayType extends Type
             }
         }
 
-        $out .= '<span class="md_br-'.$brId.' md_brackets">]</span>';
+        $out .= '<span class="md_br-'.$brId.' md_brackets" title="array: '.$count.'">]</span>';
         $out .= '</span>';
 
         return $out;

@@ -18,11 +18,11 @@ let mnlnkDumpInit = window.mnlnkDumpInit || function (rootId) {
                 parent.classList.toggle('md_open');
                 if (parent.classList.contains('md_open')) {
                     target.innerText = '<<';
-                    target.title = 'Свернуть';
+                    target.title = 'Collapse';
                 }
                 else {
                     target.innerText = '>>';
-                    target.title = 'Развернуть';
+                    target.title = 'Expand';
                 }
 
                 if (parent.classList.contains('md_string'))
