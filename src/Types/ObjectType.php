@@ -45,7 +45,7 @@ class ObjectType extends Type
             $out .= '<span class="md_braces">}</span>';
 
         } else {
-            $brId = static::getUid();
+            $brId = Dumper::getUid();
 
             self::$list[] = $object;
             self::$br[$objId] = $brId;
@@ -218,7 +218,7 @@ class ObjectType extends Type
         $count = count($vars);
 
         if ($count > 0) {
-            $uid = static::getUid();
+            $uid = Dumper::getUid();
 
             $out .= '<span class="md_row">';
             $out .= '<span class="md_block">';

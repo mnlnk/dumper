@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace Manuylenko\Dumper\Types;
 
+use Manuylenko\Dumper\Dumper;
+
 class StringType extends Type
 {
     /**
@@ -35,7 +37,7 @@ class StringType extends Type
         if ($length > self::$maxlength) {
             $collapse = self::htmlspecialchars(self::replaceNel($string));
             $expand = self::htmlspecialchars(self::replaceNel(mb_substr($string, 0, self::$maxlength - 1, self::$charset)));
-            $uId = self::getUid();
+            $uId = Dumper::getUid();
 
             $out .= '<span class="md_collapse">"'.$collapse.'" </span>';
             $out .= '<span class="md_expand">"'.$expand.'..." </span>';

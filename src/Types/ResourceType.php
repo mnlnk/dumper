@@ -16,7 +16,7 @@ class ResourceType extends Type
     {
         $out = '';
         $type = get_resource_type($resource);
-        $uId = static::getUid();
+        $uId = Dumper::getUid();
 
         $out .= '<span class="md_block md_object">';
         $out .= '<span class="md_resource" title="Ресурс">Resource </span>';

@@ -32,7 +32,7 @@ class ArrayType extends Type
             default => 'элементов'
         };
 
-        $brId = static::getUid();
+        $brId = Dumper::getUid();
 
         $out = '<span class="md_block md_array" title="Массив: '.$count.' '.$ends.'">';
         $out .= '<span class="md_br-'.$brId.' md_brackets">[</span>';
