@@ -13,7 +13,7 @@ let mnlnkDumpInit = window.mnlnkDumpInit || function (rId) {
             e1.addEventListener('click', event => {
                 let el = event.target;
                 let parent = el.parentElement;
-                const id = el.classList[0].slice(3);
+                const id = el.classList[0].slice(6);
 
                 parent.classList.toggle('md_open');
                 if (parent.classList.contains('md_open')) {
@@ -40,7 +40,7 @@ let mnlnkDumpInit = window.mnlnkDumpInit || function (rId) {
 
     let _braces = (e, s) => {
         e.querySelectorAll(s).forEach(e2 => {
-            const bId = e2.classList[0].slice(3);
+            const bId = e2.classList[0].slice(6);
 
             e2.addEventListener('mouseenter', event => {
                 event.target.parentElement.querySelectorAll(':scope .md_br-' + bId).forEach(e3 => {
@@ -58,7 +58,7 @@ let mnlnkDumpInit = window.mnlnkDumpInit || function (rId) {
 
     let _hash = (e, s) => {
         e.querySelectorAll(s).forEach(e2 => {
-            const hId = e2.classList[0].slice(3);
+            const hId = e2.classList[0].slice(6);
 
             e2.addEventListener('mouseenter', event => {
                 mnlnkRoots.forEach(mRoot => {

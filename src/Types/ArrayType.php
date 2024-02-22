@@ -35,7 +35,7 @@ class ArrayType extends Type
         $brId = static::getUid();
 
         $out = '<span class="md_block md_array" title="Массив: '.$count.' '.$ends.'">';
-        $out .= '<span class="md_br-'.$brId.' brackets">[</span>';
+        $out .= '<span class="md_br-'.$brId.' md_brackets">[</span>';
 
 
 
@@ -72,7 +72,7 @@ class ArrayType extends Type
             }
         }
 
-        $out .= '<span class="md_br-'.$brId.' brackets">]</span>';
+        $out .= '<span class="md_br-'.$brId.' md_brackets">]</span>';
         $out .= '</span>';
 
         return $out;
