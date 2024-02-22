@@ -140,9 +140,11 @@ class ObjectType extends Type
                     $out .= '<span class="md_modifier" title="'.$title.' static">('.$modifier.')</span>';
                 }
                 else {
+                    $out .= '<span class="md_modifier" title="'.$title.'">';
                     $out .= '<span class="md_parentheses">(</span>';
-                    $out .= '<span class="md_modifier" title="'.$title.'">'.$modifier.'</span>';
+                    $out .= $modifier;
                     $out .= '<span class="md_parentheses">)</span>';
+                    $out .= '</span>';
                 }
 
                 $out .= ' ';
