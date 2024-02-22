@@ -19,7 +19,7 @@ class Dumper
      *
      * @var string[]
      */
-    protected static array $id = [];
+    protected static array $uId = [];
 
     /**
      * ..
@@ -44,7 +44,7 @@ class Dumper
             self::$resourcesLoaded = true;
         }
 
-        $id = self::getId();
+        $id = self::getUId();
 
         $out .= '<div id="md_id-'.$id.'" class="mnlnk_dump">';
         $out .= '<span class="md_row">';
@@ -59,15 +59,15 @@ class Dumper
     /**
      * ..
      */
-    public static function getId(): string
+    public static function getUId(): string
     {
         while (true) {
-            $id = substr(md5((string) mt_rand(1, 100000)), -4);
+            $uId = substr(md5((string) mt_rand(1, 100000)), -4);
 
-            if (! in_array($id, self::$id)) {
-                self::$id[] = $id;
+            if (! in_array($uId, self::$uId)) {
+                self::$uId[] = $uId;
 
-                return $id;
+                return $uId;
             }
         }
     }
