@@ -37,8 +37,6 @@ class ArrayType extends Type
         $out = '<span class="md_block md_array" title="Массив: '.$count.' '.$ends.'">';
         $out .= '<span class="md_br-'.$brId.' md_brackets">[</span>';
 
-
-
         if (in_array($array, self::$list)) {
             $arrId = array_keys(self::$list, $array)[0];
             $recId = self::$br[$arrId];
