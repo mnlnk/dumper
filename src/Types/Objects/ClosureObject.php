@@ -128,7 +128,9 @@ class ClosureObject
     }
 
     /**
-     * Получает список возвращаемых типов.
+     * Получает массив возвращаемых типов.
+     *
+     * @return ReturnTypeData[]
      */
     protected function getReturnTypes(ReflectionFunction $ref): array
     {
