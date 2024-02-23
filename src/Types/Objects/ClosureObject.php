@@ -85,15 +85,11 @@ class ClosureObject
         else {
             $out .= '<span class="md_block">';
 
-            if (count($rData->names) == 1) {
-                $out .= $this->object->renderClass($rData->names[0]);
-            }
-            else {
-                foreach ($rData->names as &$name) $class = $this->object->renderClass($name);
-
-                $out .= implode(' &amp; ', $rData->names);
+            foreach ($rData->names as &$name) {
+                $name = $this->object->renderClass($name);
             }
 
+            $out .= implode(' &amp; ', $rData->names);
             $out .= '</span>';
         }
 
