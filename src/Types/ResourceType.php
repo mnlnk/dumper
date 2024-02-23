@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace Manuylenko\Dumper\Types;
 
+use Manuylenko\Dumper\Types\Resources\StreamResource;
+
 class ResourceType extends Type
 {
     /**
@@ -23,13 +25,16 @@ class ResourceType extends Type
         $out .= '<span class="md_type">'.$type.'</span> ';
         $out .= '<span class="md_br-'.$uId.' md_braces" title="resource">{</span>';
 
-        $getDataMethod = str_replace('-', '', 'get'.ucfirst($type).'Data');
+        $data = match ($type) {
+            'stream' => (new StreamResource())->getData($resource),
+            default => []
+        };
 
-        if (method_exists(__CLASS__, $getDataMethod)) {
+        if (count($data) > 0) {
             $out .= '<a class="md_to-'.$uId.' md_toggle" title="Expand">>></a>';
             $out .= '<span class="md_content">';
 
-            foreach (static::$getDataMethod($resource) as $key => $value) {
+            foreach ($data as $key => $value) {
                 $out .= '<span class="md_row">';
                 $out .= '<span class="md_property">'.$key.'</span>';
                 $out .= '<span class="md_operator">: </span>';
@@ -44,15 +49,5 @@ class ResourceType extends Type
         $out .= '</span>';
 
         return $out;
-    }
-
-    /**
-     * Получает основную информацию о потоке.
-     *
-     * @param resource $stream
-     */
-    protected static function getStreamData($stream): array
-    {
-        return stream_get_meta_data($stream) + ['context' => stream_context_get_params($stream)];
     }
 }
