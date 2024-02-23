@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Manuylenko\Dumper\Types\Objects\Closure;
 
-class ReturnTypeData
+class TypeData
 {
     /**
      * Конструктор.
