@@ -9,6 +9,7 @@ use Manuylenko\Dumper\Types\ObjectType;
 use ReflectionFunction;
 use ReflectionIntersectionType;
 use ReflectionNamedType;
+use ReflectionParameter;
 use ReflectionType;
 use ReflectionUnionType;
 
@@ -193,7 +194,7 @@ class ClosureObject
                 case 'parameters':
                     foreach ($vars as $param) {
                         $out .= '<span class="md_row">';
-                        $pType = ($pType = $param->getType()) ? $pType->getName() : '';
+                        $pType = $this->renderParameterType($param);
                         $out .= '<span class="md_property" title="'.$pType.'">$'.$param->getName().'</span>';
 
                         if ($param->isDefaultValueAvailable()) {
@@ -222,5 +223,28 @@ class ClosureObject
         }
 
         return $out;
+    }
+
+    /**
+     * Рендерит тип параметра.
+     */
+    protected function renderParameterType(ReflectionParameter $param): string
+    {
+        $typeData = $this->getTypesData($param->getType());
+        $countData = count($typeData);
+
+        switch ($countData) {
+            case 0:
+                return 'undefined type';
+            case 1:
+                return implode(' & ', $typeData[0]->names);
+            default:
+                $names = [];
+                foreach ($typeData as $data) {
+                    $names[] = $data->names[0];
+                }
+
+                return implode(' | ', $names);
+        }
     }
 }
