@@ -28,15 +28,15 @@ class StringType extends Type
         if ($length > $this->maxlength) {
             $uId = $this->dumper->genUId();
 
-            $collapse = $this->htmlspecialchars($this->replaceNel($string));
-            $expand = $this->htmlspecialchars($this->replaceNel(mb_substr($string, 0, $this->maxlength - 1, $this->charset)));
+            $collapse = $this->replaceNel($this->htmlspecialchars($string));
+            $expand = $this->replaceNel($this->htmlspecialchars(mb_substr($string, 0, $this->maxlength - 1, $this->charset)));
 
             $out .= '<span class="md_collapse">"'.$collapse.'" </span>';
             $out .= '<span class="md_expand">"'.$expand.'..." </span>';
             $out .= '<a class="md_to-'.$uId.' md_toggle" title="Expand">>></a>';
         }
         else {
-            $out .= '"'.$this->replaceNel($string).'"';
+            $out .= '"'.$this->replaceNel($this->htmlspecialchars($string)).'"';
         }
 
         $out .= '</span>';
