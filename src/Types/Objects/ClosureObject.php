@@ -135,9 +135,13 @@ class ClosureObject
      *
      * @return TypeData[]
      */
-    protected function getTypesData(ReflectionType $refType): array
+    protected function getTypesData(?ReflectionType $refType): array
     {
         $types = [];
+
+        if ($refType === null) {
+            return $types;
+        }
 
         switch (true) {
             case $refType instanceof ReflectionNamedType:
