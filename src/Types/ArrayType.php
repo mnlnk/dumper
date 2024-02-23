@@ -3,67 +3,65 @@ declare(strict_types=1);
 
 namespace Manuylenko\Dumper\Types;
 
-use Manuylenko\Dumper\Dumper;
-
 class ArrayType extends Type
 {
     /**
-     * Массив массивов для поиска рекурсии.
+     * Отрисованные массивы.
+     *
+     * @var array[]
      */
-    protected static array $list = [];
+    protected static array $renderList = [];
 
     /**
-     * Массив идентификаторов скобок массивов.
+     * Идентификаторы скобок массивов.
+     *
+     * @var string[]
      */
-    protected static array $br = [];
+    protected static array $brackets = [];
 
 
     /**
      * Рендерит массив.
      */
-    public static function render(Dumper $dumper, array $array): string
+    public function render(array $array): string
     {
+        $uId = $this->dumper->getUId();
         $count = count($array);
-        $brId = Dumper::getUid();
 
         $out = '<span class="md_block md_array">';
-        $out .= '<span class="md_br-'.$brId.' md_brackets" title="array: '.$count.'">[</span>';
+        $out .= '<span class="md_br-'.$uId.' md_brackets" title="array: '.$count.'">[</span>';
 
-        if (in_array($array, static::$list)) {
-            $arrId = array_keys(static::$list, $array)[0];
-            $recId = static::$br[$arrId];
+        if (in_array($array, static::$renderList)) {
+            $arrayId = array_keys(static::$renderList, $array)[0];
+            $recursionId = static::$brackets[$arrayId];
 
-            $out .= '<span class="md_re-'.$recId.' md_recursion" title="recursion">&recursion</span>';
+            $out .= '<span class="md_re-'.$recursionId.' md_recursion" title="recursion">&recursion</span>';
         }
         else {
             if ($count > 0) {
-                $out .= '<a class="md_to-'.$brId.' md_toggle" title="Expand">>></a>';
+                $out .= '<a class="md_to-'.$uId.' md_toggle" title="Expand">>></a>';
                 $out .= '<span class="md_content">';
 
-                static::$list[] = $array;
-                $arrId = array_keys(static::$list, $array)[0];
-                static::$br[$arrId] = $brId;
+                static::$renderList[] = $array;
+                $arrayId = array_keys(static::$renderList, $array)[0];
+                static::$brackets[$arrayId] = $uId;
 
                 foreach ($array as $key => $value) {
                     $out .= '<span class="md_row">';
-
-                    $out .= is_numeric($key)
-                        ? '<span class="md_number">'.$key.'</span>'
-                        : '<span class="md_string">"'.$key.'"</span>';
-
+                    $out .= is_numeric($key) ? '<span class="md_number">'.$key.'</span>' : '<span class="md_string">"'.$key.'"</span>';
                     $out .= '<span class="md_operator"> => </span>';
-                    $out .= $dumper->resolve($value);
+                    $out .= $this->dumper->resolve($value);
                     $out .= '</span>';
                 }
 
-                unset(static::$br[$arrId]);
-                array_pop(static::$list);
+                unset(static::$brackets[$arrayId]);
+                array_pop(static::$renderList);
 
                 $out .= '</span>';
             }
         }
 
-        $out .= '<span class="md_br-'.$brId.' md_brackets" title="array: '.$count.'">]</span>';
+        $out .= '<span class="md_br-'.$uId.' md_brackets" title="array: '.$count.'">]</span>';
         $out .= '</span>';
 
         return $out;

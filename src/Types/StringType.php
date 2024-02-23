@@ -3,42 +3,40 @@ declare(strict_types=1);
 
 namespace Manuylenko\Dumper\Types;
 
-use Manuylenko\Dumper\Dumper;
-
 class StringType extends Type
 {
     /**
      * Кодировка строк.
      */
-    protected static string $charset = 'UTF-8';
+    protected string $charset = 'UTF-8';
 
     /**
      * Максимальная длинна строки в неразвернутом виде.
      */
-    protected static int $maxlength = 60;
+    protected int $maxlength = 60;
 
 
     /**
      * Рендерит строку.
      */
-    public static function render(string $string): string
+    public function render(string $string): string
     {
-        $length = mb_strlen($string, static::$charset);
+        $length = mb_strlen($string, $this->charset);
 
         $out = '<span class="md_block md_string" title="string: '.$length.'">';
 
-        if ($length > static::$maxlength) {
-            $uId = Dumper::getUid();
+        if ($length > $this->maxlength) {
+            $uId = $this->dumper->getUId();
 
-            $collapse = static::htmlspecialchars(static::replaceNel($string));
-            $expand = static::htmlspecialchars(static::replaceNel(mb_substr($string, 0, static::$maxlength - 1, static::$charset)));
+            $collapse = $this->htmlspecialchars($this->replaceNel($string));
+            $expand = $this->htmlspecialchars($this->replaceNel(mb_substr($string, 0, $this->maxlength - 1, $this->charset)));
 
             $out .= '<span class="md_collapse">"'.$collapse.'" </span>';
             $out .= '<span class="md_expand">"'.$expand.'..." </span>';
             $out .= '<a class="md_to-'.$uId.' md_toggle" title="Expand">>></a>';
         }
         else {
-            $out .= '"'.static::replaceNel($string).'"';
+            $out .= '"'.$this->replaceNel($string).'"';
         }
 
         $out .= '</span>';
@@ -49,15 +47,15 @@ class StringType extends Type
     /**
      * Преобразует спец. символы в строке.
      */
-    protected static function htmlspecialchars(string $string): string
+    protected function htmlspecialchars(string $string): string
     {
-        return htmlspecialchars($string, ENT_QUOTES | ENT_SUBSTITUTE, static::$charset);
+        return htmlspecialchars($string, ENT_QUOTES | ENT_SUBSTITUTE, $this->charset);
     }
 
     /**
      * Заменяет символы перевода строки на <br>.
      */
-    protected static function replaceNel(string $string): string
+    protected function replaceNel(string $string): string
     {
         $string = str_replace(
             [

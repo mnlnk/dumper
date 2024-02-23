@@ -8,61 +8,60 @@ use ReflectionFunction;
 use ReflectionIntersectionType;
 use ReflectionNamedType;
 use ReflectionObject;
-use Manuylenko\Dumper\Dumper;
 use ReflectionUnionType;
 
 class ObjectType extends Type
 {
     /**
-     * Длинна пространства имен в сокращенном виде.
+     * Размер пространства имен в сокращенном виде.
      */
-    protected static int $shortNamespaceLength = 4;
+    protected int $shortNamespaceLength = 4;
 
     /**
-     * Массив объектов для поиска рекурсии.
+     * Отрисованные объекты.
+     *
+     * @var object[]
      */
-    protected static array $list = [];
+    protected static array $renderList = [];
 
     /**
-     * Массив идентификаторов скобок объектов.
+     * Идентификаторы скобок объектов.
+     *
+     * @var string[]
      */
-    protected static array $br = [];
+    protected static array $braces = [];
 
 
     /**
      * Рендерит объект.
      */
-    public static function render(Dumper $dumper, object $object): string
+    public function render(object $object): string
     {
         $objId = (string) spl_object_id($object);
 
         $out  = '<span class="md_block md_object">';
-        $out .= static::renderClass(get_class($object));
+        $out .= $this->renderClass(get_class($object));
         $out .= ' <span class="md_ha-'.$objId.' md_hash" title="id">#'.$objId.'</span> ';
 
-        if (in_array($object, static::$list)) {
-            $recId = static::$br[$objId];
+        if (in_array($object, static::$renderList)) {
+            $recId = static::$braces[$objId];
 
             $out .= '<span class="md_braces" title="object">{</span>';
             $out .= '<span class="md_re-'.$recId.' md_recursion" title="recursion">&recursion</span>';
             $out .= '<span class="md_braces" title="object">}</span>';
         }
         else {
-            $brId = Dumper::getUid();
+            $uId = $this->dumper->getUId();
 
-            static::$list[] = $object;
-            static::$br[$objId] = $brId;
+            static::$renderList[] = $object;
+            static::$braces[$objId] = $uId;
 
-            $out .= '<span class="md_br-'.$brId.' md_braces" title="object">{</span>';
+            $out .= '<span class="md_br-'.$uId.' md_braces" title="object">{</span>';
+            $out .= $object instanceof Closure ? $this->renderClosure($object, $uId) : $this->renderObject($object, $uId);
+            $out .= '<span class="md_br-'.$uId.' md_braces" title="object">}</span>';
 
-            $out .= $object instanceof Closure
-                ? static::renderClosure($object, $brId, $dumper)
-                : static::renderObject($object, $brId, $dumper);
-
-            $out .= '<span class="md_br-'.$brId.' md_braces" title="object">}</span>';
-
-            unset(static::$br[$objId]);
-            array_pop(static::$list);
+            unset(static::$braces[$objId]);
+            array_pop(static::$renderList);
         }
 
         $out .= '</span>';
@@ -73,7 +72,7 @@ class ObjectType extends Type
     /**
      * Рендерит пространство имен и имя класса.
      */
-    protected static function renderClass(string $class): string
+    protected function renderClass(string $class): string
     {
         $out = '';
 
@@ -85,8 +84,8 @@ class ObjectType extends Type
 
             $out .= '<span class="md_namespace" title="namespace"';
 
-            if (static::$shortNamespaceLength < mb_strlen($namespace) - 3) {
-                $shortNamespace = mb_substr($namespace, 0, static::$shortNamespaceLength);
+            if ($this->shortNamespaceLength < mb_strlen($namespace) - 3) {
+                $shortNamespace = mb_substr($namespace, 0, $this->shortNamespaceLength);
 
                 $out .= ' data-ns="'.$namespace.'\\">'.$shortNamespace.'...';
             }
@@ -105,7 +104,7 @@ class ObjectType extends Type
     /**
      * Рендерит содержимое объекта.
      */
-    protected static function renderObject(object $object, string $uId, Dumper $dumper): string
+    protected function renderObject(object $object, string $uId): string
     {
         $out = '';
 
@@ -156,7 +155,7 @@ class ObjectType extends Type
                 $out .= '<span class="md_operator"> = </span>';
 
                 if ($prop->isInitialized($object)) {
-                    $out .= $dumper->resolve($prop->getValue($object));
+                    $out .= $this->dumper->resolve($prop->getValue($object));
                 }
                 else {
                     $out .= '<span class="md_not_init" title="uninitialized">#E#</span>';
@@ -174,7 +173,7 @@ class ObjectType extends Type
     /**
      * Рендерит содержимое объекта Closure.
      */
-    protected static function renderClosure(object $object, string $uId, Dumper $dumper): string
+    protected function renderClosure(object $object, string $uId): string
     {
         $out = '';
 
@@ -201,19 +200,19 @@ class ObjectType extends Type
         $out .= '</span>';
 
         // Входные параметры
-        $out .= static::renderVariable($reflection->getParameters(), 'parameters', $dumper);
+        $out .= $this->renderVariable($reflection->getParameters(), 'parameters');
 
         // Статические переменные
-        $out .= static::renderVariable($reflection->getStaticVariables(), 'use', $dumper);
+        $out .= $this->renderVariable($reflection->getStaticVariables(), 'use');
 
         // Возвращаемые типы
-        $types = static::getReturnTypes($reflection);
+        $types = $this->getReturnTypes($reflection);
 
         if (count($types) > 0) {
             $out .= '<span class="md_row">';
             $out .= '<span class="md_property">return</span>';
             $out .= '<span class="md_operator">: </span>';
-            $out .= static::renderReturnTypes($types);
+            $out .= $this->renderReturnTypes($types);
             $out .= '</span>';
         }
 
@@ -228,7 +227,7 @@ class ObjectType extends Type
      * $type[0] -> builtin
      * $type[1] -> names
      */
-    protected static function renderType(array $type): string
+    protected function renderType(array $type): string
     {
         $out = '';
 
@@ -239,10 +238,11 @@ class ObjectType extends Type
             $out .= '<span class="md_block">';
 
             if (count($type[1]) == 1) {
-                $out .= static::renderClass($type[1][0]);
+                $out .= $this->renderClass($type[1][0]);
             }
             else {
-                foreach ($type[1] as &$class) $class = static::renderClass($class);
+                foreach ($type[1] as &$class) $class = $this->renderClass($class);
+
                 $out .= implode(' &amp; ', $type[1]);
             }
 
@@ -255,28 +255,29 @@ class ObjectType extends Type
     /**
      * Рендерит возвращаемые типы для объекта Closure.
      */
-    protected static function renderReturnTypes(array $types): string
+    protected function renderReturnTypes(array $types): string
     {
         if (count($types) == 1) {
-             return static::renderType($types[0]);
+             return $this->renderType($types[0]);
         }
 
         $out = '';
-        $uid = Dumper::getUid();
+
+        $uId = $this->dumper->getUId();
 
         $out .= '<span class="md_block">';
-        $out .= '<span class="md_br-'.$uid.' md_braces" title="">[</span>';
-        $out .= '<a class="md_to-'.$uid.' md_toggle" title="Expand">>></a>';
+        $out .= '<span class="md_br-'.$uId.' md_braces" title="">[</span>';
+        $out .= '<a class="md_to-'.$uId.' md_toggle" title="Expand">>></a>';
         $out .= '<span class="md_content">';
 
         foreach ($types as $type) {
             $out .= '<span class="md_row">';
-            $out .= static::renderType($type);
+            $out .= $this->renderType($type);
             $out .= '</span>';
         }
 
         $out .= '</span>';
-        $out .= '<span class="md_br-'.$uid.' md_braces" title="">]</span>';
+        $out .= '<span class="md_br-'.$uId.' md_braces" title="">]</span>';
         $out .= '</span>';
 
         return $out;
@@ -293,7 +294,7 @@ class ObjectType extends Type
      *  [[false, ['Closure']]]                   // Closure
      *  [[false, ['Closure']], [true, ['null']]] // ?Closure
      */
-    protected static function getReturnTypes(ReflectionFunction $ref): array
+    protected function getReturnTypes(ReflectionFunction $ref): array
     {
         $types = [];
         $return = $ref->getReturnType();
@@ -327,21 +328,21 @@ class ObjectType extends Type
     /**
      * Рендерит значения переменных объекта Closure.
      */
-    protected static function renderVariable(array $vars, string $type, Dumper $dumper): string
+    protected function renderVariable(array $vars, string $type): string
     {
         $out = '';
 
         $count = count($vars);
 
         if ($count > 0) {
-            $uid = Dumper::getUid();
+            $uId = $this->dumper->getUId();
 
             $out .= '<span class="md_row">';
             $out .= '<span class="md_block">';
             $out .= '<span class="md_property">'.$type.'</span>';
             $out .= '<span class="md_operator">: </span>';
-            $out .= '<span class="md_br-'.$uid.' md_braces" title="variables: '.$count.'">[</span>';
-            $out .= '<a class="md_to-'.$uid.' md_toggle" title="Expand">>></a>';
+            $out .= '<span class="md_br-'.$uId.' md_braces" title="variables: '.$count.'">[</span>';
+            $out .= '<a class="md_to-'.$uId.' md_toggle" title="Expand">>></a>';
             $out .= '<span class="md_content">';
 
             switch ($type) {
@@ -353,7 +354,7 @@ class ObjectType extends Type
 
                         if ($param->isDefaultValueAvailable()) {
                             $out .= '<span class="md_operator"> = </span>';
-                            $out .= $dumper->resolve($param->getDefaultValue());
+                            $out .= $this->dumper->resolve($param->getDefaultValue());
                         }
 
                         $out .= '</span>';
@@ -364,14 +365,14 @@ class ObjectType extends Type
                         $out .= '<span class="md_row">';
                         $out .= '<span class="md_property">$'.$key.'</span>';
                         $out .= '<span class="md_operator"> = </span>';
-                        $out .= $dumper->resolve($value);
+                        $out .= $this->dumper->resolve($value);
                         $out .= '</span>';
                     }
                     break;
             }
 
             $out .= '</span>';
-            $out .= '<span class="md_br-'.$uid.' md_braces" title="variables: '.$count.'">]</span>';
+            $out .= '<span class="md_br-'.$uId.' md_braces" title="variables: '.$count.'">]</span>';
             $out .= '</span>';
             $out .= '</span>';
         }

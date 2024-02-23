@@ -8,7 +8,7 @@ class NullType extends Type
     /**
      * Рендерит нулевое значение.
      */
-    public static function render(): string
+    public function render(): string
     {
         return '<span class="md_null" title="null">null</span>';
     }

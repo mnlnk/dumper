@@ -3,8 +3,6 @@ declare(strict_types=1);
 
 namespace Manuylenko\Dumper\Types;
 
-use Manuylenko\Dumper\Dumper;
-
 class ResourceType extends Type
 {
     /**
@@ -12,12 +10,12 @@ class ResourceType extends Type
      *
      * @param resource $resource
      */
-    public static function render(Dumper $dumper, $resource): string
+    public function render($resource): string
     {
         $out = '';
 
         $type = get_resource_type($resource);
-        $uId = Dumper::getUid();
+        $uId = $this->dumper->getUId();
 
         $out .= '<span class="md_block md_object">';
         $out .= '<span class="md_resource" title="resource">Resource </span>';
@@ -35,7 +33,7 @@ class ResourceType extends Type
                 $out .= '<span class="md_row">';
                 $out .= '<span class="md_property">'.$key.'</span>';
                 $out .= '<span class="md_operator">: </span>';
-                $out .= $dumper->resolve($value);
+                $out .= $this->dumper->resolve($value);
                 $out .= '</span>';
             }
 

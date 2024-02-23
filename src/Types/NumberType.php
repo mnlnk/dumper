@@ -8,7 +8,7 @@ class NumberType extends Type
     /**
      * Рендерит число.
      */
-    public static function render(int|float $num): string
+    public function render(int|float $num): string
     {
         if (is_double($num)) {
             if ($num == (int) $num) {

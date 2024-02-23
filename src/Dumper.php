@@ -44,13 +44,13 @@ class Dumper
             static::$resourcesLoaded = true;
         }
 
-        $id = static::getUId();
+        $uId = $this->getUId();
 
-        $out .= '<div id="md_id-'.$id.'" class="mnlnk_dump">';
+        $out .= '<div id="md_id-'.$uId.'" class="mnlnk_dump">';
         $out .= '<span class="md_row">';
         $out .= $this->resolve($var);
         $out .= '</span>';
-        $out .= '<script>mnlnkDumpInit("'.$id.'")</script>';
+        $out .= '<script>mnlnkDumpInit("'.$uId.'")</script>';
         $out .= '</div>';
 
         echo $out;
@@ -59,7 +59,7 @@ class Dumper
     /**
      * Получает уникальный идентификатор.
      */
-    public static function getUId(): string
+    public function getUId(): string
     {
         while (true) {
             $uId = substr(md5((string) mt_rand(1, 100000)), -4);
@@ -73,19 +73,19 @@ class Dumper
     }
 
     /**
-     * Решает как рендерить данные в зависимости от их типа.
+     * Решает, как рендерить данные в зависимости от их типа.
      */
     public function resolve(mixed $var): string
     {
         return match (strtolower(gettype($var))) {
-            'null' => NullType::render(),
-            'boolean' => BooleanType::render($var),
-            'integer', 'double' => NumberType::render($var),
-            'string' => StringType::render($var),
-            'array' => ArrayType::render($this, $var),
-            'object' => ObjectType::render($this, $var),
-            'resource', 'resource (closed)' => ResourceType::render($this, $var),
-            default => UnknownType::render(),
+            'null' => (new NullType())->render(),
+            'boolean' => (new BooleanType())->render($var),
+            'integer', 'double' => (new NumberType())->render($var),
+            'string' => (new StringType($this))->render($var),
+            'array' => (new ArrayType($this))->render($var),
+            'object' => (new ObjectType($this))->render($var),
+            'resource', 'resource (closed)' => (new ResourceType($this))->render($var),
+            default => (new UnknownType())->render()
         };
     }
 }
