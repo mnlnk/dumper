@@ -24,29 +24,35 @@ class Dumper
     /**
      * Указывает, что ресурсы (js, сcs) были загружены.
      */
-    protected static bool $resourcesLoaded = false;
+    protected static bool $loaded = false;
 
+
+    /**
+     * Загружает ресурсы.
+     */
+    protected function loadResources(): void
+    {
+        if (!static::$loaded) {
+            $css = trim(file_get_contents(__DIR__.'/Resources/Css/light_style.min.css'));
+            $js = trim(file_get_contents(__DIR__.'/Resources/Js/script.min.js'));
+
+            echo implode(['<style>', $css, '</style>']);
+            echo implode(['<script>', $js, '</script>']);
+
+            static::$loaded = true;
+        }
+    }
 
     /**
      * Выводит дамп данных.
      */
     public function dump(mixed $var): void
     {
-        $out = '';
-
-        if (!static::$resourcesLoaded) {
-            $css = file_get_contents(__DIR__.'/Resources/Css/light_style.min.css');
-            $js = file_get_contents(__DIR__.'/Resources/Js/script.min.js');
-
-            $out .= join(['<style>', trim($css), '</style>', '']);
-            $out .= join(['<script>', trim($js), '</script>', '']);
-
-            static::$resourcesLoaded = true;
-        }
+        $this->loadResources();
 
         $uId = $this->getUId();
 
-        $out .= '<div id="md_id-'.$uId.'" class="mnlnk_dump">';
+        $out  = '<div id="md_id-'.$uId.'" class="mnlnk_dump">';
         $out .= '<span class="md_row">';
         $out .= $this->resolve($var);
         $out .= '</span>';
