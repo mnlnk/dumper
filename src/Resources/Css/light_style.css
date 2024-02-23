@@ -1,8 +1,6 @@
 .mnlnk_dump {
     background: #fefefe;
-    padding: 4px;
-    border-radius: 4px;
-    margin-bottom: 2px;
+    padding: 4px 12px;
     color: #656d73;
     font: 12px Consolas, Menlo, "SF Mono", monospace;
     line-height: 20px;
@@ -31,12 +29,12 @@
     display: none;
     padding-left: 20px;
     transition: border-left-color 0.03s linear;
-    border-left: #f5f5f5 solid 1px;
+    border-left: #efefef solid 1px;
     margin-left: 2px;
 }
 .mnlnk_dump .md_row:hover > .md_open > .md_content,
 .mnlnk_dump .md_row:hover.md_open > .md_content {
-    border-left: #bbc9d2 solid 1px;
+    border-left: #cbd4da solid 1px;
 }
 .mnlnk_dump .md_open > .md_content {
     display: block;
@@ -45,23 +43,35 @@
 .mnlnk_dump .md_braces,
 .mnlnk_dump .md_parentheses {
     cursor: default;
-    color: #656d73;
+    color: #5f6b77;
 }
 .mnlnk_dump .md_brackets,
 .mnlnk_dump .md_braces {
     margin: 0 -2px;
-    border-radius: 2px;
-    padding: 1px 2px 1px 2px;
     transition: 0.07s linear;
+    padding: 1px 2px;
+    border-radius: 3px;
+}
+.mnlnk_dump .md_brackets {
+    /**/
+}
+.mnlnk_dump .md_braces {
+    /**/
+}
+.mnlnk_dump .md_parentheses {
+    /**/
 }
 .mnlnk_dump .md_row > .md_open > .md_braces.md_highlight,
 .mnlnk_dump .md_row > .md_open > .md_brackets.md_highlight {
-    background-color: #e7786c;
+    background-color: #da756b;
     color: #f1f3f3;
 }
 .mnlnk_dump .md_operator {
     cursor: default;
-    color: #8d959b;
+    color: #67727c;
+}
+.mnlnk_dump .md_operator.md_return {
+    padding: 0 6px;
 }
 .mnlnk_dump .md_null {
     color: #cd584c;
@@ -70,10 +80,10 @@
     color: #cd584c;
 }
 .mnlnk_dump .md_number {
-    color: #2879de;
+    color: #0a78d2;
 }
 .mnlnk_dump .md_string {
-    color: #2b9142;
+    color: #0f8c2c;
 }
 .mnlnk_dump .md_string .md_nel {
     color: #b9a80b;
@@ -89,14 +99,14 @@
 .mnlnk_dump .md_recursion {
     cursor: default;
     margin: 0 4px;
-    border-radius: 2px;
+    border-radius: 3px;
     padding: 1px 3px;
     transition: 0.07s linear;
     color: #cd584c;
 }
 .mnlnk_dump .md_recursion:hover {
     color: #ffffff;
-    background: #ea8c82;
+    background: #da756b;
 }
 .mnlnk_dump .md_array {
     /**/
@@ -105,42 +115,45 @@
     /**/
 }
 .mnlnk_dump .md_object .md_namespace {
-    color: #838b91;
+    color: #73828d;
 }
 .mnlnk_dump .md_object .md_namespace[data-ns] {
     cursor: pointer;
 }
+.mnlnk_dump .md_resource {
+    color: #8f7f02;
+}
 .mnlnk_dump .md_object .md_class {
-    color: #998807;
+    color: #8f7f02;
 }
 .mnlnk_dump .md_object .md_hash {
     cursor: default;
     transition: 0.07s linear;
-    border-radius: 2px;
+    border-radius: 3px;
     color: #b853ac;
     padding: 1px 3px;
     margin: 0 -3px;
 }
 .mnlnk_dump .md_object .md_hash.md_highlight {
     color: #ffffff;
-    background: #bf77b5;
+    background: #b662aa;
 }
 .mnlnk_dump .md_object .md_modifier {
     cursor: default;
-    color: #eb5b4f;
+    color: #71a168;
+}
+.mnlnk_dump .md_object .md_modifier.md_static {
+    color: #da6d6d;
 }
 .mnlnk_dump .md_object .md_property {
-    color: #3b5057;
+    color: #294249;
 }
 .mnlnk_dump .md_object .md_not_init {
-    color: #95aebf;
+    color: #7c96a6;
 }
 .mnlnk_dump .md_type {
-    color: #87915e;
-}
-.mnlnk_dump .md_resource {
-    color: #9b8a0b;
+    color: #5a7c91;
 }
 .mnlnk_dump .md_unknown {
-    color: #7e8a95;
+    color: #717f8c;
 }
