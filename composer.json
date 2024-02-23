@@ -1,6 +1,7 @@
 {
   "name": "mnlnk/dumper",
-  "version": "1.0.2",
+  "description": "PHP дампер для отладки кода",
+  "version": "2.0.0",
   "license": "MIT",
   "authors": [
     {
