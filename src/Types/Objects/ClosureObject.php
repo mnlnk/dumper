@@ -59,73 +59,8 @@ class ClosureObject
         $out .= $this->renderVariable($ref->getStaticVariables(), 'use');
 
         // Возвращаемые типы
-        $types = $this->getTypesData($ref->getReturnType());
+        $out .= $this->renderReturnType($this->getTypesData($ref->getReturnType()));
 
-        if (count($types) > 0) {
-            $out .= '<span class="md_row">';
-            $out .= '<span class="md_property">return</span>';
-            $out .= '<span class="md_operator">: </span>';
-            $out .= $this->renderReturnTypes($types);
-            $out .= '</span>';
-        }
-
-        $out .= '</span>';
-
-        return $out;
-    }
-
-    /**
-     * Рендерит данные возвращаемого типа.
-     */
-    protected function renderReturnTypeData(TypeData $rData): string
-    {
-        $out = '';
-
-        if ($rData->builtin) {
-            $out .= '<span class="md_type">'.$rData->names[0].'</span>';
-        }
-        else {
-            $out .= '<span class="md_block">';
-
-            foreach ($rData->names as &$name) {
-                $name = $this->object->renderClass($name);
-            }
-
-            $out .= implode(' &amp; ', $rData->names);
-            $out .= '</span>';
-        }
-
-        return $out;
-    }
-
-    /**
-     * Рендерит возвращаемые типы для объекта Closure.
-     *
-     * @param TypeData[] $types
-     */
-    protected function renderReturnTypes(array $types): string
-    {
-        if (count($types) == 1) {
-            return $this->renderReturnTypeData($types[0]);
-        }
-
-        $out = '';
-
-        $uId = $this->object->getDumper()->genUId();
-
-        $out .= '<span class="md_block">';
-        $out .= '<span class="md_br-'.$uId.' md_braces" title="">[</span>';
-        $out .= '<a class="md_to-'.$uId.' md_toggle" title="Expand">>></a>';
-        $out .= '<span class="md_content">';
-
-        foreach ($types as $type) {
-            $out .= '<span class="md_row">';
-            $out .= $this->renderReturnTypeData($type);
-            $out .= '</span>';
-        }
-
-        $out .= '</span>';
-        $out .= '<span class="md_br-'.$uId.' md_braces" title="">]</span>';
         $out .= '</span>';
 
         return $out;
@@ -246,5 +181,61 @@ class ClosureObject
 
                 return implode(' | ', $names);
         }
+    }
+
+    /**
+     * Рендерит возвращаемые типы для объекта Closure.
+     *
+     * @param TypeData[] $typesData
+     */
+    protected function renderReturnType(array $typesData): string
+    {
+        $out = '';
+        $countData = count($typesData);
+
+        if ($countData == 0) {
+            return '';
+        }
+
+        $out .= '<span class="md_row">';
+        $out .= '<span class="md_property">return</span>';
+        $out .= '<span class="md_operator">: </span>';
+
+        if ($countData == 1) {
+            if ($typesData[0]->builtin) {
+                $out .= '<span class="md_type">'.$typesData[0]->names[0].'</span>';
+            }
+            else {
+                $out .= '<span class="md_block">';
+                if (count($typesData[0]->names) == 1) {
+                    $out .= $this->object->renderClass($typesData[0]->names[0]);
+                }
+                else {
+                    foreach ($typesData[0]->names as &$name) {
+                        $name = $this->object->renderClass($name);
+                    }
+                    $out .= implode('<span class="md_operator md_return" title="intersection">&amp;</span>', $typesData[0]->names);
+                }
+                $out  .= '</span>';
+            }
+        }
+        else {
+            $types = [];
+            $out .= '<span class="md_block">';
+            foreach ($typesData as $type) {
+                if ($type->builtin) {
+                    $types[] = '<span class="md_type">'.$type->names[0].'</span>';
+                }
+                else {
+                    $types[] = $this->object->renderClass($type->names[0]);
+                }
+            }
+            $out .= implode('<span class="md_operator md_return" title="union">|</span>', $types);
+            $out  .= '</span>';
+        }
+
+        $out .= '</span>';
+
+        return $out;
     }
 }
