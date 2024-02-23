@@ -132,45 +132,6 @@ class ClosureObject
     }
 
     /**
-     * Получает массив данных типов.
-     *
-     * @return TypeData[]
-     */
-    protected function getTypesData(?ReflectionType $refType): array
-    {
-        $types = [];
-
-        if ($refType === null) {
-            return $types;
-        }
-
-        switch (true) {
-            case $refType instanceof ReflectionNamedType:
-                $types[] = new TypeData($refType->isBuiltin(), [$refType->getName()]);
-                if ($refType->getName() !== 'null' && $refType->allowsNull()) {
-                    $types[] = new TypeData(true, ['null']);
-                }
-                break;
-            case $refType instanceof ReflectionUnionType:
-                /** @var ReflectionNamedType $type */
-                foreach ($refType->getTypes() as $type) {
-                    $types[] = new TypeData($type->isBuiltin(), [$type->getName()]);
-                }
-                break;
-            case $refType instanceof ReflectionIntersectionType:
-                $names = [];
-                /** @var ReflectionNamedType $type */
-                foreach ($refType->getTypes() as $type) {
-                    $names[] = $type->getName();
-                }
-                $types[] = new TypeData(false, $names);
-                break;
-        }
-
-        return $types;
-    }
-
-    /**
      * Рендерит значения переменных объекта Closure.
      */
     protected function renderVariable(array $vars, string $type): string
@@ -223,6 +184,45 @@ class ClosureObject
         }
 
         return $out;
+    }
+
+    /**
+     * Получает массив данных типов.
+     *
+     * @return TypeData[]
+     */
+    protected function getTypesData(?ReflectionType $refType): array
+    {
+        $types = [];
+
+        if ($refType === null) {
+            return $types;
+        }
+
+        switch (true) {
+            case $refType instanceof ReflectionNamedType:
+                $types[] = new TypeData($refType->isBuiltin(), [$refType->getName()]);
+                if ($refType->getName() !== 'null' && $refType->allowsNull()) {
+                    $types[] = new TypeData(true, ['null']);
+                }
+                break;
+            case $refType instanceof ReflectionUnionType:
+                /** @var ReflectionNamedType $type */
+                foreach ($refType->getTypes() as $type) {
+                    $types[] = new TypeData($type->isBuiltin(), [$type->getName()]);
+                }
+                break;
+            case $refType instanceof ReflectionIntersectionType:
+                $names = [];
+                /** @var ReflectionNamedType $type */
+                foreach ($refType->getTypes() as $type) {
+                    $names[] = $type->getName();
+                }
+                $types[] = new TypeData(false, $names);
+                break;
+        }
+
+        return $types;
     }
 
     /**
