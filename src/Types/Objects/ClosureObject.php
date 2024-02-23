@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Manuylenko\Dumper\Types\Objects;
 
 use Closure;
+use Manuylenko\Dumper\Types\Objects\Closure\ReturnTypeData;
 use Manuylenko\Dumper\Types\ObjectType;
 use ReflectionFunction;
 use ReflectionIntersectionType;
@@ -71,30 +72,26 @@ class ClosureObject
         return $out;
     }
 
-
     /**
      * Рендерит возвращаемый тип.
-     *
-     * $type[0] -> builtin
-     * $type[1] -> names
      */
-    protected function renderType(array $type): string
+    protected function renderType(ReturnTypeData $rData): string
     {
         $out = '';
 
-        if ($type[0]) {
-            $out .= '<span class="md_type">'.$type[1][0].'</span>';
+        if ($rData->builtin) {
+            $out .= '<span class="md_type">'.$rData->names[0].'</span>';
         }
         else {
             $out .= '<span class="md_block">';
 
-            if (count($type[1]) == 1) {
-                $out .= $this->object->renderClass($type[1][0]);
+            if (count($rData->names) == 1) {
+                $out .= $this->object->renderClass($rData->names[0]);
             }
             else {
-                foreach ($type[1] as &$class) $class = $this->object->renderClass($class);
+                foreach ($rData->names as &$name) $class = $this->object->renderClass($name);
 
-                $out .= implode(' &amp; ', $type[1]);
+                $out .= implode(' &amp; ', $rData->names);
             }
 
             $out .= '</span>';
@@ -136,14 +133,6 @@ class ClosureObject
 
     /**
      * Получает список возвращаемых типов.
-     *
-     * Return:
-     *  [[true, ['string']]]                     // string
-     *  [[true, ['string']], [true, ['null']]]   // ?string
-     *  [[true, ['string']], [true, ['int']]]    // string|int
-     *  [[false, ['Iterator', 'Countable']]]     // Iterator&Countable
-     *  [[false, ['Closure']]]                   // Closure
-     *  [[false, ['Closure']], [true, ['null']]] // ?Closure
      */
     protected function getReturnTypes(ReflectionFunction $ref): array
     {
@@ -152,15 +141,15 @@ class ClosureObject
 
         switch (true) {
             case $return instanceof ReflectionNamedType:
-                $types[] = [$return->isBuiltin(), [$return->getName()]];
+                $types[] = new ReturnTypeData($return->isBuiltin(), [$return->getName()]);
                 if ($return->allowsNull()) {
-                    $types[] = [true, ['null']];
+                    $types[] = new ReturnTypeData(true, ['null']);
                 }
                 break;
             case $return instanceof ReflectionUnionType:
                 /** @var ReflectionNamedType $type */
                 foreach ($return->getTypes() as $type) {
-                    $types[] = [$type->isBuiltin(), [$type->getName()]];
+                    $types[] = new ReturnTypeData($type->isBuiltin(), [$type->getName()]);
                 }
                 break;
             case $return instanceof ReflectionIntersectionType:
@@ -169,7 +158,7 @@ class ClosureObject
                 foreach ($return->getTypes() as $type) {
                     $names[] = $type->getName();
                 }
-                $types[] = [false, $names];
+                $types[] = new ReturnTypeData(false, $names);
                 break;
         }
 
