@@ -9,6 +9,7 @@ use Manuylenko\Dumper\Types\ObjectType;
 use ReflectionFunction;
 use ReflectionIntersectionType;
 use ReflectionNamedType;
+use ReflectionType;
 use ReflectionUnionType;
 
 class ClosureObject
@@ -57,7 +58,7 @@ class ClosureObject
         $out .= $this->renderVariable($ref->getStaticVariables(), 'use');
 
         // Возвращаемые типы
-        $types = $this->getReturnTypes($reflection);
+        $types = $this->getTypesData($ref->getReturnType());
 
         if (count($types) > 0) {
             $out .= '<span class="md_row">';
@@ -128,32 +129,31 @@ class ClosureObject
     }
 
     /**
-     * Получает массив возвращаемых типов.
+     * Получает массив данных типов.
      *
      * @return TypeData[]
      */
-    protected function getReturnTypes(ReflectionFunction $ref): array
+    protected function getTypesData(ReflectionType $refType): array
     {
         $types = [];
-        $return = $ref->getReturnType();
 
         switch (true) {
-            case $return instanceof ReflectionNamedType:
-                $types[] = new TypeData($return->isBuiltin(), [$return->getName()]);
-                if ($return->allowsNull()) {
+            case $refType instanceof ReflectionNamedType:
+                $types[] = new TypeData($refType->isBuiltin(), [$refType->getName()]);
+                if ($refType->allowsNull()) {
                     $types[] = new TypeData(true, ['null']);
                 }
                 break;
-            case $return instanceof ReflectionUnionType:
+            case $refType instanceof ReflectionUnionType:
                 /** @var ReflectionNamedType $type */
-                foreach ($return->getTypes() as $type) {
+                foreach ($refType->getTypes() as $type) {
                     $types[] = new TypeData($type->isBuiltin(), [$type->getName()]);
                 }
                 break;
-            case $return instanceof ReflectionIntersectionType:
+            case $refType instanceof ReflectionIntersectionType:
                 $names = [];
                 /** @var ReflectionNamedType $type */
-                foreach ($return->getTypes() as $type) {
+                foreach ($refType->getTypes() as $type) {
                     $names[] = $type->getName();
                 }
                 $types[] = new TypeData(false, $names);
