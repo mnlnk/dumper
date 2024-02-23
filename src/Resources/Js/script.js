@@ -31,11 +31,11 @@ let mnlnkDumpInit = window.mnlnkDumpInit || function (rootId) {
                 if (_blocks.includes(id))
                     return;
 
-                _toggle(parent, ':scope > .md-content > .md-row > .md-block > .md-toggle');
+                _toggle(parent, ':scope > .md-content > .md-row > .md-wrap > .md-toggle');
                 _braces(parent, ':scope > .md-br-' + id);
-                _hash(parent, ':scope > .md-content > .md-row > .md-block > .md-hash');
-                _namespace(parent, ':scope > .md-content > .md-row > .md-block > .md-namespace[data-ns]')
-                _recursion(parent, ':scope > .md-content > .md-row > .md-block > .md-recursion');
+                _hash(parent, ':scope > .md-content > .md-row > .md-wrap > .md-hash');
+                _namespace(parent, ':scope > .md-content > .md-row > .md-wrap > .md-namespace[data-ns]')
+                _recursion(parent, ':scope > .md-content > .md-row > .md-wrap > .md-recursion');
 
                 _blocks.push(id);
             });
@@ -114,9 +114,9 @@ let mnlnkDumpInit = window.mnlnkDumpInit || function (rootId) {
 
     /**/
 
-    _toggle(_root, ':scope > .md-row > .md-block > .md-toggle');
-    _hash(_root, ':scope > .md-row > .md-block > .md-hash');
-    _namespace(_root, ':scope > .md-row > .md-block > .md-namespace[data-ns]')
+    _toggle(_root, ':scope > .md-row > .md-wrap > .md-toggle');
+    _hash(_root, ':scope > .md-row > .md-wrap > .md-hash');
+    _namespace(_root, ':scope > .md-row > .md-wrap > .md-namespace[data-ns]')
 
     /**/
 }

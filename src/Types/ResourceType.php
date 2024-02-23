@@ -19,7 +19,7 @@ class ResourceType extends Type
         $type = get_resource_type($resource);
         $uId = $this->dumper->genUId();
 
-        $out .= '<span class="md-object md-block">';
+        $out .= '<span class="md-object md-wrap">';
         $out .= '<span class="md-resource" title="resource">Resource </span>';
         $out .= '<span class="md-operator">: </span>';
         $out .= '<span class="md-type">'.$type.'</span> ';

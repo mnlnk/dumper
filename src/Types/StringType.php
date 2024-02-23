@@ -23,7 +23,7 @@ class StringType extends Type
     {
         $length = mb_strlen($string, $this->charset);
 
-        $out = '<span class="md-string md-block" title="string: '.$length.'">';
+        $out = '<span class="md-string md-wrap" title="string: '.$length.'">';
 
         if ($length > $this->maxlength) {
             $uId = $this->dumper->genUId();

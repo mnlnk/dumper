@@ -36,7 +36,7 @@ class ObjectType extends Type
     {
         $objId = (string) spl_object_id($object);
 
-        $out  = '<span class="md-object md-block">';
+        $out  = '<span class="md-object md-wrap">';
         $out .= $this->renderClass(get_class($object));
         $out .= ' <span class="md-ha-'.$objId.' md-hash" title="id">#'.$objId.'</span> ';
 

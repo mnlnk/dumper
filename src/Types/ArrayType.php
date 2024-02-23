@@ -28,7 +28,7 @@ class ArrayType extends Type
         $uId = $this->dumper->genUId();
         $count = count($array);
 
-        $out = '<span class="md-array md-block">';
+        $out = '<span class="md-array md-wrap">';
         $out .= '<span class="md-br-'.$uId.' md-brackets" title="array: '.$count.'">[</span>';
 
         if (in_array($array, static::$renderList)) {

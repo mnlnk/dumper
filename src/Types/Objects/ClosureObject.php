@@ -79,7 +79,7 @@ class ClosureObject
             $uId = $this->object->getDumper()->genUId();
 
             $out .= '<span class="md-row">';
-            $out .= '<span class="md-block">';
+            $out .= '<span class="md-wrap">';
             $out .= '<span class="md-property">'.$type.'</span>';
             $out .= '<span class="md-operator">: </span>';
             $out .= '<span class="md-br-'.$uId.' md-braces" title="variables: '.$count.'">[</span>';
@@ -206,7 +206,7 @@ class ClosureObject
                 $out .= '<span class="md-type">'.$typesData[0]->names[0].'</span>';
             }
             else {
-                $out .= '<span class="md-block">';
+                $out .= '<span class="md-wrap">';
                 if (count($typesData[0]->names) == 1) {
                     $out .= $this->object->renderClass($typesData[0]->names[0]);
                 }
@@ -221,7 +221,7 @@ class ClosureObject
         }
         else {
             $types = [];
-            $out .= '<span class="md-block">';
+            $out .= '<span class="md-wrap">';
             foreach ($typesData as $type) {
                 if ($type->builtin) {
                     $types[] = '<span class="md-type">'.$type->names[0].'</span>';
