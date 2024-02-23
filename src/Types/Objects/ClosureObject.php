@@ -146,7 +146,7 @@ class ClosureObject
         switch (true) {
             case $refType instanceof ReflectionNamedType:
                 $types[] = new TypeData($refType->isBuiltin(), [$refType->getName()]);
-                if ($refType->allowsNull()) {
+                if ($refType->getName() !== 'null' && $refType->allowsNull()) {
                     $types[] = new TypeData(true, ['null']);
                 }
                 break;
