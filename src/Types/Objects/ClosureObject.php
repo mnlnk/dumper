@@ -28,7 +28,7 @@ class ClosureObject
     {
         $out = '';
 
-        $reflection = new ReflectionFunction($object);
+        $ref = new ReflectionFunction($object);
 
         $out .= '<a class="md_to-'.$uId.' md_toggle" title="Expand">>></a>';
         $out .= '<span class="md_content">';
@@ -37,12 +37,12 @@ class ClosureObject
         $out .= '<span class="md_row">';
         $out .= '<span class="md_property">file</span>';
         $out .= '<span class="md_operator">: </span>';
-        $out .= '<span class="md_string">"'.$reflection->getFileName().'"</span>';
+        $out .= '<span class="md_string">"'.$ref->getFileName().'"</span>';
         $out .= '</span>';
 
         // Номера строк
-        $start = $reflection->getStartLine();
-        $end = $reflection->getEndLine();
+        $start = $ref->getStartLine();
+        $end = $ref->getEndLine();
 
         $out .= '<span class="md_row">';
         $out .= '<span class="md_property">'.($start < $end ? 'lines' : 'line').'</span>';
@@ -51,10 +51,10 @@ class ClosureObject
         $out .= '</span>';
 
         // Входные параметры
-        $out .= $this->renderVariable($reflection->getParameters(), 'parameters');
+        $out .= $this->renderVariable($ref->getParameters(), 'parameters');
 
         // Статические переменные
-        $out .= $this->renderVariable($reflection->getStaticVariables(), 'use');
+        $out .= $this->renderVariable($ref->getStaticVariables(), 'use');
 
         // Возвращаемые типы
         $types = $this->getReturnTypes($reflection);
