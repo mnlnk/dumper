@@ -25,7 +25,7 @@ class ArrayType extends Type
      */
     public function render(array $array): string
     {
-        $uId = $this->dumper->getUId();
+        $uId = $this->dumper->genUId();
         $count = count($array);
 
         $out = '<span class="md_block md_array">';

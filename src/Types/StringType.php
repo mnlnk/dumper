@@ -26,7 +26,7 @@ class StringType extends Type
         $out = '<span class="md_block md_string" title="string: '.$length.'">';
 
         if ($length > $this->maxlength) {
-            $uId = $this->dumper->getUId();
+            $uId = $this->dumper->genUId();
 
             $collapse = $this->htmlspecialchars($this->replaceNel($string));
             $expand = $this->htmlspecialchars($this->replaceNel(mb_substr($string, 0, $this->maxlength - 1, $this->charset)));

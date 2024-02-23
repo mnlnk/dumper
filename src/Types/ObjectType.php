@@ -51,7 +51,7 @@ class ObjectType extends Type
             $out .= '<span class="md_braces" title="object">}</span>';
         }
         else {
-            $uId = $this->dumper->getUId();
+            $uId = $this->dumper->genUId();
 
             static::$renderList[] = $object;
             static::$braces[$objId] = $uId;
@@ -263,7 +263,7 @@ class ObjectType extends Type
 
         $out = '';
 
-        $uId = $this->dumper->getUId();
+        $uId = $this->dumper->genUId();
 
         $out .= '<span class="md_block">';
         $out .= '<span class="md_br-'.$uId.' md_braces" title="">[</span>';
@@ -335,7 +335,7 @@ class ObjectType extends Type
         $count = count($vars);
 
         if ($count > 0) {
-            $uId = $this->dumper->getUId();
+            $uId = $this->dumper->genUId();
 
             $out .= '<span class="md_row">';
             $out .= '<span class="md_block">';

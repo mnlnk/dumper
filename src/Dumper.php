@@ -50,7 +50,7 @@ class Dumper
     {
         $this->loadResources();
 
-        $uId = $this->getUId();
+        $uId = $this->genUId();
 
         $out  = '<div id="md_id-'.$uId.'" class="mnlnk_dump">';
         $out .= '<span class="md_row">';
@@ -63,9 +63,9 @@ class Dumper
     }
 
     /**
-     * Получает уникальный идентификатор.
+     * Генерирует уникальный идентификатор.
      */
-    public function getUId(): string
+    public function genUId(): string
     {
         while (true) {
             $uId = substr(md5((string) mt_rand(1, 100000)), -4);
