@@ -14,4 +14,12 @@ abstract class Type
     {
         //
     }
+
+    /**
+     * Получает объект дампера.
+     */
+    public function getDumper(): ?Dumper
+    {
+        return $this->dumper;
+    }
 }
