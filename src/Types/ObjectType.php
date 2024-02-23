@@ -141,7 +141,7 @@ class ObjectType extends Type
                 $out .= '<span class="md_row">';
 
                 if ($prop->isStatic()) {
-                    $out .= '<span class="md_modifier" title="'.$title.' static">('.$modifier.')</span>';
+                    $out .= '<span class="md_modifier md_static" title="'.$title.' static">('.$modifier.')</span>';
                 }
                 else {
                     $out .= '<span class="md_modifier" title="'.$title.'">';
