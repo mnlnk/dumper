@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Manuylenko\Dumper\Types\Objects;
 
 use Closure;
-use Manuylenko\Dumper\Types\Objects\Closure\ReturnTypeData;
+use Manuylenko\Dumper\Types\Objects\Closure\TypeData;
 use Manuylenko\Dumper\Types\ObjectType;
 use ReflectionFunction;
 use ReflectionIntersectionType;
@@ -75,7 +75,7 @@ class ClosureObject
     /**
      * Рендерит возвращаемый тип.
      */
-    protected function renderType(ReturnTypeData $rData): string
+    protected function renderType(TypeData $rData): string
     {
         $out = '';
 
@@ -130,7 +130,7 @@ class ClosureObject
     /**
      * Получает массив возвращаемых типов.
      *
-     * @return ReturnTypeData[]
+     * @return TypeData[]
      */
     protected function getReturnTypes(ReflectionFunction $ref): array
     {
@@ -139,15 +139,15 @@ class ClosureObject
 
         switch (true) {
             case $return instanceof ReflectionNamedType:
-                $types[] = new ReturnTypeData($return->isBuiltin(), [$return->getName()]);
+                $types[] = new TypeData($return->isBuiltin(), [$return->getName()]);
                 if ($return->allowsNull()) {
-                    $types[] = new ReturnTypeData(true, ['null']);
+                    $types[] = new TypeData(true, ['null']);
                 }
                 break;
             case $return instanceof ReflectionUnionType:
                 /** @var ReflectionNamedType $type */
                 foreach ($return->getTypes() as $type) {
-                    $types[] = new ReturnTypeData($type->isBuiltin(), [$type->getName()]);
+                    $types[] = new TypeData($type->isBuiltin(), [$type->getName()]);
                 }
                 break;
             case $return instanceof ReflectionIntersectionType:
@@ -156,7 +156,7 @@ class ClosureObject
                 foreach ($return->getTypes() as $type) {
                     $names[] = $type->getName();
                 }
-                $types[] = new ReturnTypeData(false, $names);
+                $types[] = new TypeData(false, $names);
                 break;
         }
 
