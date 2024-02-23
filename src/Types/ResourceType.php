@@ -19,11 +19,11 @@ class ResourceType extends Type
         $type = get_resource_type($resource);
         $uId = $this->dumper->genUId();
 
-        $out .= '<span class="md_block md_object">';
-        $out .= '<span class="md_resource" title="resource">Resource </span>';
-        $out .= '<span class="md_operator">: </span>';
-        $out .= '<span class="md_type">'.$type.'</span> ';
-        $out .= '<span class="md_br-'.$uId.' md_braces" title="resource">{</span>';
+        $out .= '<span class="md-object md-block">';
+        $out .= '<span class="md-resource" title="resource">Resource </span>';
+        $out .= '<span class="md-operator">: </span>';
+        $out .= '<span class="md-type">'.$type.'</span> ';
+        $out .= '<span class="md-br-'.$uId.' md-braces" title="resource">{</span>';
 
         $data = match ($type) {
             'stream' => (new StreamResource())->getData($resource),
@@ -31,13 +31,13 @@ class ResourceType extends Type
         };
 
         if (count($data) > 0) {
-            $out .= '<a class="md_to-'.$uId.' md_toggle" title="Expand">>></a>';
-            $out .= '<span class="md_content">';
+            $out .= '<a class="md-to-'.$uId.' md-toggle" title="Expand">>></a>';
+            $out .= '<span class="md-content">';
 
             foreach ($data as $key => $value) {
-                $out .= '<span class="md_row">';
-                $out .= '<span class="md_property">'.$key.'</span>';
-                $out .= '<span class="md_operator">: </span>';
+                $out .= '<span class="md-row">';
+                $out .= '<span class="md-property">'.$key.'</span>';
+                $out .= '<span class="md-operator">: </span>';
                 $out .= $this->dumper->resolve($value);
                 $out .= '</span>';
             }
@@ -45,7 +45,7 @@ class ResourceType extends Type
             $out .= '</span>';
         }
 
-        $out .= '<span class="md_br-'.$uId.' md_braces" title="resource">}</span>';
+        $out .= '<span class="md-br-'.$uId.' md-braces" title="resource">}</span>';
         $out .= '</span>';
 
         return $out;

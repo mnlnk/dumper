@@ -52,8 +52,8 @@ class Dumper
 
         $uId = $this->genUId();
 
-        $out  = '<div id="md_id-'.$uId.'" class="mnlnk_dump">';
-        $out .= '<span class="md_row">';
+        $out  = '<div id="md-id-'.$uId.'" class="mnlnk-dump">';
+        $out .= '<span class="md-row">';
         $out .= $this->resolve($var);
         $out .= '</span>';
         $out .= '<script>mnlnkDumpInit("'.$uId.'")</script>';

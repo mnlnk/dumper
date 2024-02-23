@@ -21,6 +21,6 @@ class NumberType extends Type
             $type = 'int';
         }
 
-        return '<span class="md_number" title="'.$type.'">'.$num.'</span>';
+        return '<span class="md-number" title="'.$type.'">'.$num.'</span>';
     }
 }

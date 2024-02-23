@@ -10,6 +10,6 @@ class NullType extends Type
      */
     public function render(): string
     {
-        return '<span class="md_null" title="null">null</span>';
+        return '<span class="md-null" title="null">null</span>';
     }
 }

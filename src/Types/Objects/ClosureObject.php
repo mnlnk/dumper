@@ -32,24 +32,24 @@ class ClosureObject
 
         $ref = new ReflectionFunction($object);
 
-        $out .= '<a class="md_to-'.$uId.' md_toggle" title="Expand">>></a>';
-        $out .= '<span class="md_content">';
+        $out .= '<a class="md-to-'.$uId.' md-toggle" title="Expand">>></a>';
+        $out .= '<span class="md-content">';
 
         // Имя файла
-        $out .= '<span class="md_row">';
-        $out .= '<span class="md_property">file</span>';
-        $out .= '<span class="md_operator">: </span>';
-        $out .= '<span class="md_string">"'.$ref->getFileName().'"</span>';
+        $out .= '<span class="md-row">';
+        $out .= '<span class="md-property">file</span>';
+        $out .= '<span class="md-operator">: </span>';
+        $out .= '<span class="md-string">"'.$ref->getFileName().'"</span>';
         $out .= '</span>';
 
         // Номера строк
         $start = $ref->getStartLine();
         $end = $ref->getEndLine();
 
-        $out .= '<span class="md_row">';
-        $out .= '<span class="md_property">'.($start < $end ? 'lines' : 'line').'</span>';
-        $out .= '<span class="md_operator">: </span>';
-        $out .= '<span class="md_number">'.($start < $end ? $start.'-'.$end : $start).'</span>';
+        $out .= '<span class="md-row">';
+        $out .= '<span class="md-property">'.($start < $end ? 'lines' : 'line').'</span>';
+        $out .= '<span class="md-operator">: </span>';
+        $out .= '<span class="md-number">'.($start < $end ? $start.'-'.$end : $start).'</span>';
         $out .= '</span>';
 
         // Входные параметры
@@ -78,23 +78,23 @@ class ClosureObject
         if ($count > 0) {
             $uId = $this->object->getDumper()->genUId();
 
-            $out .= '<span class="md_row">';
-            $out .= '<span class="md_block">';
-            $out .= '<span class="md_property">'.$type.'</span>';
-            $out .= '<span class="md_operator">: </span>';
-            $out .= '<span class="md_br-'.$uId.' md_braces" title="variables: '.$count.'">[</span>';
-            $out .= '<a class="md_to-'.$uId.' md_toggle" title="Expand">>></a>';
-            $out .= '<span class="md_content">';
+            $out .= '<span class="md-row">';
+            $out .= '<span class="md-block">';
+            $out .= '<span class="md-property">'.$type.'</span>';
+            $out .= '<span class="md-operator">: </span>';
+            $out .= '<span class="md-br-'.$uId.' md-braces" title="variables: '.$count.'">[</span>';
+            $out .= '<a class="md-to-'.$uId.' md-toggle" title="Expand">>></a>';
+            $out .= '<span class="md-content">';
 
             switch ($type) {
                 case 'parameters':
                     foreach ($vars as $param) {
-                        $out .= '<span class="md_row">';
+                        $out .= '<span class="md-row">';
                         $pType = $this->renderParameterType($param);
-                        $out .= '<span class="md_property" title="'.$pType.'">$'.$param->getName().'</span>';
+                        $out .= '<span class="md-property" title="'.$pType.'">$'.$param->getName().'</span>';
 
                         if ($param->isDefaultValueAvailable()) {
-                            $out .= '<span class="md_operator"> = </span>';
+                            $out .= '<span class="md-operator"> = </span>';
                             $out .= $this->object->getDumper()->resolve($param->getDefaultValue());
                         }
 
@@ -103,9 +103,9 @@ class ClosureObject
                     break;
                 case 'use':
                     foreach ($vars as $key => $value) {
-                        $out .= '<span class="md_row">';
-                        $out .= '<span class="md_property">$'.$key.'</span>';
-                        $out .= '<span class="md_operator"> = </span>';
+                        $out .= '<span class="md-row">';
+                        $out .= '<span class="md-property">$'.$key.'</span>';
+                        $out .= '<span class="md-operator"> = </span>';
                         $out .= $this->object->getDumper()->resolve($value);
                         $out .= '</span>';
                     }
@@ -113,7 +113,7 @@ class ClosureObject
             }
 
             $out .= '</span>';
-            $out .= '<span class="md_br-'.$uId.' md_braces" title="variables: '.$count.'">]</span>';
+            $out .= '<span class="md-br-'.$uId.' md-braces" title="variables: '.$count.'">]</span>';
             $out .= '</span>';
             $out .= '</span>';
         }
@@ -197,16 +197,16 @@ class ClosureObject
             return '';
         }
 
-        $out .= '<span class="md_row">';
-        $out .= '<span class="md_property">return</span>';
-        $out .= '<span class="md_operator">: </span>';
+        $out .= '<span class="md-row">';
+        $out .= '<span class="md-property">return</span>';
+        $out .= '<span class="md-operator">: </span>';
 
         if ($countData == 1) {
             if ($typesData[0]->builtin) {
-                $out .= '<span class="md_type">'.$typesData[0]->names[0].'</span>';
+                $out .= '<span class="md-type">'.$typesData[0]->names[0].'</span>';
             }
             else {
-                $out .= '<span class="md_block">';
+                $out .= '<span class="md-block">';
                 if (count($typesData[0]->names) == 1) {
                     $out .= $this->object->renderClass($typesData[0]->names[0]);
                 }
@@ -214,23 +214,23 @@ class ClosureObject
                     foreach ($typesData[0]->names as &$name) {
                         $name = $this->object->renderClass($name);
                     }
-                    $out .= implode('<span class="md_operator md_return" title="intersection">&amp;</span>', $typesData[0]->names);
+                    $out .= implode('<span class="md-operator md-return" title="intersection">&amp;</span>', $typesData[0]->names);
                 }
                 $out  .= '</span>';
             }
         }
         else {
             $types = [];
-            $out .= '<span class="md_block">';
+            $out .= '<span class="md-block">';
             foreach ($typesData as $type) {
                 if ($type->builtin) {
-                    $types[] = '<span class="md_type">'.$type->names[0].'</span>';
+                    $types[] = '<span class="md-type">'.$type->names[0].'</span>';
                 }
                 else {
                     $types[] = $this->object->renderClass($type->names[0]);
                 }
             }
-            $out .= implode('<span class="md_operator md_return" title="union">|</span>', $types);
+            $out .= implode('<span class="md-operator md-return" title="union">|</span>', $types);
             $out  .= '</span>';
         }
 

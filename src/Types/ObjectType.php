@@ -36,16 +36,16 @@ class ObjectType extends Type
     {
         $objId = (string) spl_object_id($object);
 
-        $out  = '<span class="md_block md_object">';
+        $out  = '<span class="md-object md-block">';
         $out .= $this->renderClass(get_class($object));
-        $out .= ' <span class="md_ha-'.$objId.' md_hash" title="id">#'.$objId.'</span> ';
+        $out .= ' <span class="md-ha-'.$objId.' md-hash" title="id">#'.$objId.'</span> ';
 
         if (in_array($object, static::$renderList)) {
             $recId = static::$braces[$objId];
 
-            $out .= '<span class="md_braces" title="object">{</span>';
-            $out .= '<span class="md_re-'.$recId.' md_recursion" title="recursion">&recursion</span>';
-            $out .= '<span class="md_braces" title="object">}</span>';
+            $out .= '<span class="md-braces" title="object">{</span>';
+            $out .= '<span class="md-re-'.$recId.' md-recursion" title="recursion">&recursion</span>';
+            $out .= '<span class="md-braces" title="object">}</span>';
         }
         else {
             $uId = $this->dumper->genUId();
@@ -53,9 +53,9 @@ class ObjectType extends Type
             static::$renderList[] = $object;
             static::$braces[$objId] = $uId;
 
-            $out .= '<span class="md_br-'.$uId.' md_braces" title="object">{</span>';
+            $out .= '<span class="md-br-'.$uId.' md-braces" title="object">{</span>';
             $out .= $this->renderObject($object, $uId);
-            $out .= '<span class="md_br-'.$uId.' md_braces" title="object">}</span>';
+            $out .= '<span class="md-br-'.$uId.' md-braces" title="object">}</span>';
 
             unset(static::$braces[$objId]);
             array_pop(static::$renderList);
@@ -79,7 +79,7 @@ class ObjectType extends Type
             $namespace = mb_substr($class, 0, $separator);
             $class = mb_substr($class, $separator + 1);
 
-            $out .= '<span class="md_namespace" title="namespace"';
+            $out .= '<span class="md-namespace" title="namespace"';
 
             if ($this->shortNamespaceLength < mb_strlen($namespace) - 3) {
                 $shortNamespace = mb_substr($namespace, 0, $this->shortNamespaceLength);
@@ -93,7 +93,7 @@ class ObjectType extends Type
             $out .= '\\</span>';
         }
 
-        $out .= '<span class="md_class" title="class">'.$class.'</span>';
+        $out .= '<span class="md-class" title="class">'.$class.'</span>';
 
         return $out;
     }
@@ -112,8 +112,8 @@ class ObjectType extends Type
         $props = (new ReflectionObject($object))->getProperties();
 
         if (count($props) > 0) {
-            $out .= '<a class="md_to-'.$uId.' md_toggle" title="Expand">>></a>';
-            $out .= '<span class="md_content">';
+            $out .= '<a class="md-to-'.$uId.' md-toggle" title="Expand">>></a>';
+            $out .= '<span class="md-content">';
 
             foreach ($props as $prop) {
                 $modifier = '';
@@ -138,28 +138,28 @@ class ObjectType extends Type
                         break;
                 }
 
-                $out .= '<span class="md_row">';
+                $out .= '<span class="md-row">';
 
                 if ($prop->isStatic()) {
-                    $out .= '<span class="md_modifier md_static" title="'.$title.' static">('.$modifier.')</span>';
+                    $out .= '<span class="md-modifier md-static" title="'.$title.' static">('.$modifier.')</span>';
                 }
                 else {
-                    $out .= '<span class="md_modifier" title="'.$title.'">';
-                    $out .= '<span class="md_parentheses">(</span>';
+                    $out .= '<span class="md-modifier" title="'.$title.'">';
+                    $out .= '<span class="md-parentheses">(</span>';
                     $out .= $modifier;
-                    $out .= '<span class="md_parentheses">)</span>';
+                    $out .= '<span class="md-parentheses">)</span>';
                     $out .= '</span>';
                 }
 
                 $out .= ' ';
-                $out .= '<span class="md_property">$'.$prop->getName().'</span>';
-                $out .= '<span class="md_operator"> = </span>';
+                $out .= '<span class="md-property">$'.$prop->getName().'</span>';
+                $out .= '<span class="md-operator"> = </span>';
 
                 if ($prop->isInitialized($object)) {
                     $out .= $this->dumper->resolve($prop->getValue($object));
                 }
                 else {
-                    $out .= '<span class="md_not_init" title="uninitialized">#E#</span>';
+                    $out .= '<span class="md-not-init" title="uninitialized">#E#</span>';
                 }
 
                 $out .= '</span>';

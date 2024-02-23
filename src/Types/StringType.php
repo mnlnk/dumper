@@ -23,7 +23,7 @@ class StringType extends Type
     {
         $length = mb_strlen($string, $this->charset);
 
-        $out = '<span class="md_block md_string" title="string: '.$length.'">';
+        $out = '<span class="md-string md-block" title="string: '.$length.'">';
 
         if ($length > $this->maxlength) {
             $uId = $this->dumper->genUId();
@@ -31,9 +31,9 @@ class StringType extends Type
             $collapse = $this->replaceNel($this->htmlspecialchars($string));
             $expand = $this->replaceNel($this->htmlspecialchars(mb_substr($string, 0, $this->maxlength - 1, $this->charset)));
 
-            $out .= '<span class="md_collapse">"'.$collapse.'" </span>';
-            $out .= '<span class="md_expand">"'.$expand.'..." </span>';
-            $out .= '<a class="md_to-'.$uId.' md_toggle" title="Expand">>></a>';
+            $out .= '<span class="md-collapse">"'.$collapse.'" </span>';
+            $out .= '<span class="md-expand">"'.$expand.'..." </span>';
+            $out .= '<a class="md-to-'.$uId.' md-toggle" title="Expand">>></a>';
         }
         else {
             $out .= '"'.$this->replaceNel($this->htmlspecialchars($string)).'"';
@@ -64,9 +64,9 @@ class StringType extends Type
                 "\n"
             ],
             [
-                '<span class="md_nel" title="windows">\r\n</span><br>',
-                '<span class="md_nel" title="mac">\r</span><br>',
-                '<span class="md_nel" title="unix">\n</span><br>',
+                '<span class="md-nel" title="windows">\r\n</span><br>',
+                '<span class="md-nel" title="mac">\r</span><br>',
+                '<span class="md-nel" title="unix">\n</span><br>',
             ],
             $string
         );
