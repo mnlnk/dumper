@@ -74,9 +74,9 @@ class ClosureObject
     }
 
     /**
-     * Рендерит возвращаемый тип.
+     * Рендерит данные возвращаемого типа.
      */
-    protected function renderType(TypeData $rData): string
+    protected function renderReturnTypeData(TypeData $rData): string
     {
         $out = '';
 
@@ -99,11 +99,13 @@ class ClosureObject
 
     /**
      * Рендерит возвращаемые типы для объекта Closure.
+     *
+     * @param TypeData[] $types
      */
     protected function renderReturnTypes(array $types): string
     {
         if (count($types) == 1) {
-            return $this->renderType($types[0]);
+            return $this->renderReturnTypeData($types[0]);
         }
 
         $out = '';
@@ -117,7 +119,7 @@ class ClosureObject
 
         foreach ($types as $type) {
             $out .= '<span class="md_row">';
-            $out .= $this->renderType($type);
+            $out .= $this->renderReturnTypeData($type);
             $out .= '</span>';
         }
 
